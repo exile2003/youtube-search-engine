@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "client": "npm run dev --prefix client",
+    "client:install": "npm install --prefix client",
+    "client:build": "npm run build --prefix client",
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "config": "^3.3.11",
+    "express": "^4.19.1",
+    "mongoose": "^8.2.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.0"
+  }
+}

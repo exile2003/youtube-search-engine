@@ -1,0 +1,5 @@
+{
+    "port": 5000,
+    "jwtSecret": "vitalii youtube database",
+    "mongoUri": "mongodb+srv://exile2003:nidooth9052465912@cluster0.f8qbb.azure.mongodb.net/?retryWrites=true&w=majority"
+  }
