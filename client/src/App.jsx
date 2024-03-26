@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import moment from 'moment'
+import debounce from 'lodash/debounce'
 import './App.css'
 
 let youtubeDB = [];
@@ -9,7 +10,8 @@ function App() {
 
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
-  const [date, setDate] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [items, setItems] = useState([]);
 
   const getFile = (e) => {
@@ -47,36 +49,86 @@ function App() {
   };
 
   const handleDateFromChange = (event) => {
-    setDate(event.target.value);
+    setDateFrom(event.target.value);
   };
 
   const handleDateToChange = (event) => {
-    setDate(event.target.value);
+    setDateTo(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setItems(tempDB)
+    tempDB = [];
 
-    let stampUnix = moment(items[0]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix()
-
-    console.log('Название:', title);
-    console.log('Канал:', channel);
-    console.log('Дата:', stampUnix);
-    console.log(youtubeDB);
-  };
-
-  useEffect(() => {
     tempDB = youtubeDB
                 .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
                 .filter(item => item.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
-  }, [title, channel])
+                .filter(item => 
+                  item.date&&dateFrom ? 
+                    moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
+                    : true
+                )
+                .filter(item => 
+                  item.date&&dateTo ? 
+                   moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
+                    : true
+                )
+
+    setItems(tempDB)
+
+    console.log('Название:', title);
+    console.log('Канал:', channel);
+    console.log('Дата:', dateFrom, dateTo);
+    console.log("youtubeDB", youtubeDB);
+    console.log("tempDB", tempDB);
+    console.log("items", items);
+
+
+  };
+
+ 
+  const getId = (arg) => {
+    const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + Math.floor(Math.random()*1000);
+    //console.log("getid", getid);
+    return getid
+  }
+
+ /*
+  function getId(arg) {
+      const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + String(Math.floor(Math.random()*1000));
+      console.log("getid", getid);
+      return Number(getid)
+  }
+*/
+/*
+  useEffect(() => {
+    console.log("title, channel")
+    console.log( moment(items[0]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix());
+    console.log( moment(dateFrom, 'YYYY-MM-DD').unix());
+    console.log( moment(dateTo, 'YYYY-MM-DD').unix() + 86400);
+
+    // tempDB = [];
+
+    // tempDB = youtubeDB
+    //             .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
+    //             .filter(item => item.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
+    //             .filter(item => 
+    //               item.date&&dateFrom ? 
+    //                 moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
+    //                 : true
+    //             )
+    //             .filter(item => 
+    //               item.date&&dateTo ? 
+    //                moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
+    //                 : true
+    //             )
+  }, [title, channel, dateFrom, dateTo])
   
   useEffect(() => {
     console.log('Items[0]:', items[0]?.date);
   }, [items])
-
+*/
   return (
     <>
       <div className="container">
@@ -91,24 +143,33 @@ function App() {
         <form onSubmit={handleSubmit}>
           <div>
             <label>Название:&nbsp;&nbsp;</label>
-            <input type="text" value={title} onChange={handleTitleChange} />
+            
+            <input type="text" onChange={debounce((e) => setTitle(e.target.value), 1000)} />
+            {/* <input type="text" onChange={(e) => setTitle(e.target.value)} /> */}
+
           </div>
           <div>
             <label>Название канала:&nbsp;&nbsp;</label>
-            <input type="text" value={channel} onChange={handleChannelChange} />
+            <input type="text" onChange={debounce((e) => setChannel(e.target.value), 1000)} />
+            {/* <input type="text" onChange={(e) => setChannel(e.target.value)} /> */}
+
           </div>
           <div>
             <label>Дата:&nbsp;&nbsp;</label>
             от&nbsp;
-            <input type="date" value={date} onChange={handleDateFromChange} />
+            <input type="date" onChange={debounce((e) => setDateFrom(e.target.value), 1000)} />
+            {/* <input type="date" onChange={(e) => setDateFrom(e.target.value)} /> */}
+
             &nbsp;до&nbsp;
-            <input type="date" value={date} onChange={handleDateToChange} />
+            <input type="date" onChange={debounce((e) => setDateTo(e.target.value), 1000)} />
+            {/* <input type="date" onChange={(e) => setDateTo(e.target.value)} /> */}
+
           </div>
           <button type="submit">Искать</button>
         </form>
         <ul>
-          {items.map(item =>  
-          <li key = {moment(item.date, 'MMMM DD, YYYY, HH:mm:ss').unix()} >
+          {items?.map(item =>  
+          <li>
             <a href = {item.titleLink}>{item.title}</a> - 
             <a href = {item.channelLink}>{item.channel}</a> - 
             {moment(item.date, 'MMMM DD, YYYY, HH:mm:ss').format('MMMM-DD-YYYY')}
