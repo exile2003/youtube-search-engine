@@ -13,8 +13,16 @@ function App() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [items, setItems] = useState([]);
+/*
+  const loadStatus = () => {
+    console.log("load status");
+    return new Promise(resolves => setTimeout(() => console.log("loaded"), 1000))
+  };
+*/
+
 
   const getFile = (e) => {
+    
     const inputFile = e.target.files[0];
     const reader = new FileReader();
   
@@ -40,22 +48,7 @@ function App() {
     };
   }
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleChannelChange = (event) => {
-    setChannel(event.target.value);
-  };
-
-  const handleDateFromChange = (event) => {
-    setDateFrom(event.target.value);
-  };
-
-  const handleDateToChange = (event) => {
-    setDateTo(event.target.value);
-  };
-
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -65,13 +58,13 @@ function App() {
                 .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
                 .filter(item => item.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
                 .filter(item => 
-                  item.date&&dateFrom ? 
-                    moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
+                  item.date&&dateFrom 
+                    ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
                     : true
                 )
                 .filter(item => 
-                  item.date&&dateTo ? 
-                   moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
+                  item.date&&dateTo 
+                    ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
                     : true
                 )
 
@@ -83,54 +76,63 @@ function App() {
     console.log("youtubeDB", youtubeDB);
     console.log("tempDB", tempDB);
     console.log("items", items);
-
+    console.log("----------------------------------")
+    console.log("item.date", moment(items[1]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix())
+    console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
 
   };
 
  
   const getId = (arg) => {
-    const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + Math.floor(Math.random()*1000);
+    const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + String(Math.floor(Math.random()*1000));
     //console.log("getid", getid);
-    return getid
+    return Number(getid)
   }
+ 
+  const loadStatus = (function() {
+    let error, response;
+    const promise = new Promise(resolves =>
+    setTimeout(resolves, 3000)
+    )
+    .then(() => (response = "success"))
+    .catch(e => (error = e));
+    return function() {
+    if (error) throw error;
+    if (response) return response;
+    throw pending;
+    };
+   })()
 
- /*
-  function getId(arg) {
-      const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + String(Math.floor(Math.random()*1000));
-      console.log("getid", getid);
-      return Number(getid)
-  }
-*/
-/*
-  useEffect(() => {
-    console.log("title, channel")
-    console.log( moment(items[0]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix());
-    console.log( moment(dateFrom, 'YYYY-MM-DD').unix());
-    console.log( moment(dateTo, 'YYYY-MM-DD').unix() + 86400);
+   function createResource(pending) {
+    let error, response;
+    pending.then(r => (response = r)).catch(e => (error = e));
+    return {
+    read() {
+    if (error) throw error;
+    if (response) return response;
+    throw pending;
+    }
+    };
+   }
 
-    // tempDB = [];
+   const threeSecondsToGnar = new Promise(resolves =>
+    setTimeout(() => resolves({ gnar: "gnarly!" }), 3000)
+   )
 
-    // tempDB = youtubeDB
-    //             .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
-    //             .filter(item => item.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
-    //             .filter(item => 
-    //               item.date&&dateFrom ? 
-    //                 moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
-    //                 : true
-    //             )
-    //             .filter(item => 
-    //               item.date&&dateTo ? 
-    //                moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
-    //                 : true
-    //             )
-  }, [title, channel, dateFrom, dateTo])
-  
-  useEffect(() => {
-    console.log('Items[0]:', items[0]?.date);
-  }, [items])
-*/
+   const resource = createResource(threeSecondsToGnar);
+
+function Gnar() {
+ const result = resource.read();
+ return <h1>Gnar: {result.gnar}</h1>;
+}
+
+  //const status = loadStatus();
+  //const statusResult = status.then(data => data)
+
   return (
     <>
+    <Gnar />
+    {/* <h1>status: {status}</h1>; */}
       <div className="container">
         <div className="header">
           <h2>Youtube videos</h2>
@@ -138,38 +140,28 @@ function App() {
             <input onChange= {getFile} type="file" name="chooseFile" id="chooseFile"  />
             <button >Обновить базу данных</button>
           </label>
-          
-        </div>
+       </div>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Название:&nbsp;&nbsp;</label>
-            
             <input type="text" onChange={debounce((e) => setTitle(e.target.value), 1000)} />
-            {/* <input type="text" onChange={(e) => setTitle(e.target.value)} /> */}
-
           </div>
           <div>
             <label>Название канала:&nbsp;&nbsp;</label>
             <input type="text" onChange={debounce((e) => setChannel(e.target.value), 1000)} />
-            {/* <input type="text" onChange={(e) => setChannel(e.target.value)} /> */}
-
           </div>
           <div>
             <label>Дата:&nbsp;&nbsp;</label>
             от&nbsp;
-            <input type="date" onChange={debounce((e) => setDateFrom(e.target.value), 1000)} />
-            {/* <input type="date" onChange={(e) => setDateFrom(e.target.value)} /> */}
-
+            <input type="date" onChange={debounce((e) => setDateFrom(e.target.value), 100)} />
             &nbsp;до&nbsp;
-            <input type="date" onChange={debounce((e) => setDateTo(e.target.value), 1000)} />
-            {/* <input type="date" onChange={(e) => setDateTo(e.target.value)} /> */}
-
+            <input type="date" onChange={debounce((e) => setDateTo(e.target.value), 100)} />
           </div>
           <button type="submit">Искать</button>
         </form>
         <ul>
           {items?.map(item =>  
-          <li>
+          <li key={getId(item.date)} >
             <a href = {item.titleLink}>{item.title}</a> - 
             <a href = {item.channelLink}>{item.channel}</a> - 
             {moment(item.date, 'MMMM DD, YYYY, HH:mm:ss').format('MMMM-DD-YYYY')}

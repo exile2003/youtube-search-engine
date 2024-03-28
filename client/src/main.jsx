@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import {GridLoader} from 'react-spinners'
 //import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  <Suspense fallback={<GridLoader />}>
+  {/* <React.StrictMode> */}
     <App />
-  </React.StrictMode>,
+  {/* </React.StrictMode> */}
+  </Suspense>,
 )
