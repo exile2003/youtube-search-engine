@@ -6,6 +6,8 @@ import './App.css'
 let youtubeDB = [];
 let tempDB =[];
 
+let error, response;
+
 function App() {
 
   const [title, setTitle] = useState('');
@@ -25,8 +27,8 @@ function App() {
     
     const inputFile = e.target.files[0];
     const reader = new FileReader();
-  
     reader.readAsText(inputFile);
+  
     reader.onload = (event) => {
       const fileContent = event.target.result;
   
@@ -89,6 +91,7 @@ function App() {
     return Number(getid)
   }
  
+  /*
   const loadStatus = (function() {
     let error, response;
     const promise = new Promise(resolves =>
@@ -102,38 +105,53 @@ function App() {
     throw pending;
     };
    })()
+  */
 
+   
    function createResource(pending) {
-    let error, response;
+    
     pending.then(r => (response = r)).catch(e => (error = e));
-    return {
-    read() {
-    if (error) throw error;
-    if (response) return response;
-    throw pending;
-    }
-    };
+      return {
+        read() {
+        if (error) throw error;
+        if (response) return response;
+        throw pending;
+        }
+      };
    }
+  
 
-   const threeSecondsToGnar = new Promise(resolves =>
-    setTimeout(() => resolves({ gnar: "gnarly!" }), 3000)
-   )
+   /*
+   function createResource(pending) {
+    
+    pending.then(r => (response = r)).catch(e => (error = e));
+      
+        if (error) throw error;
+        if (response) return response;
+        throw pending;
+    
+   }
+*/
 
-   const resource = createResource(threeSecondsToGnar);
+  const threeSecondsToGnar = new Promise(resolves => resolves({ gnar: "gnarly!" }))
+  
+  const resource = createResource(threeSecondsToGnar);
 
-function Gnar() {
- const result = resource.read();
- return <h1>Gnar: {result.gnar}</h1>;
-}
+  const result = resource.read();
 
+/*
+  function Gnar() {
+    const result = resource.read();
+    return <h1>Gnar: {result.gnar}</h1>;
+  }
+*/
+  
   //const status = loadStatus();
   //const statusResult = status.then(data => data)
 
   return (
     <>
-    <Gnar />
-    {/* <h1>status: {status}</h1>; */}
-      <div className="container">
+       <div className="container">
         <div className="header">
           <h2>Youtube videos</h2>
           <label htmlFor="chooseFile">
@@ -168,7 +186,7 @@ function Gnar() {
           </li>)}
         </ul>
       </div>
-    </>
+    </> 
           
   )
 }

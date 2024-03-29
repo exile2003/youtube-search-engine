@@ -4,6 +4,7 @@ import App from './App.jsx'
 import {GridLoader} from 'react-spinners'
 //import './index.css'
 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Suspense fallback={<GridLoader />}>
   {/* <React.StrictMode> */}
