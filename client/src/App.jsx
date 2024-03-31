@@ -6,7 +6,10 @@ import './App.css'
 let youtubeDB = [];
 let tempDB =[];
 
-let error, response;
+let error, response = false;
+
+let resource;
+
 
 function App() {
 
@@ -25,29 +28,43 @@ function App() {
 
   const getFile = (e) => {
     
-    const inputFile = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsText(inputFile);
-  
-    reader.onload = (event) => {
-      const fileContent = event.target.result;
-  
-      // Parsing the content of the input file and assign result to domTree variable
-      const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
-  
-      // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
-      const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
+    const threeSecondsToGnar = new Promise(resolves => {
 
-      allSelectors.forEach(item => item.children[0] && youtubeDB.push({
-        title: item.children[0]?.textContent,
-        titleLink: item.children[0]?.href,
-        channel: item.children[2]?.textContent,
-        channelLink: item.children[2]?.href,
-        date: item.lastChild?.textContent
-      }));
+        const inputFile = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsText(inputFile);
       
-      console.log("Yes!", youtubeDB)
-    };
+        reader.onload = (event) => {
+          const fileContent = event.target.result;
+      
+          // Parsing the content of the input file and assign result to domTree variable
+          const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
+      
+          // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
+          const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
+
+          allSelectors.forEach(item => item.children[0] && youtubeDB.push({
+            title: item.children[0]?.textContent,
+            titleLink: item.children[0]?.href,
+            channel: item.children[2]?.textContent,
+            channelLink: item.children[2]?.href,
+            date: item.lastChild?.textContent
+          }));
+          
+          console.log("Yes!", youtubeDB)
+          resolves(true)
+        }
+        
+
+      });
+
+      resource = createResource(threeSecondsToGnar);
+
+      //pending.then(r => response = r);  
+
+      //if(response) return;
+
+      //throw pending;  
   }
 
   
@@ -133,11 +150,11 @@ function App() {
    }
 */
 
-  const threeSecondsToGnar = new Promise(resolves => resolves({ gnar: "gnarly!" }))
+  //const threeSecondsToGnar = new Promise(resolves => setTimeout( () => resolves({ gnar: "gnarly!" }), 3000 ))
   
-  const resource = createResource(threeSecondsToGnar);
+  //const resource = createResource(threeSecondsToGnar);
 
-  const result = resource.read();
+ const result = resource.read()
 
 /*
   function Gnar() {
@@ -149,7 +166,7 @@ function App() {
   //const status = loadStatus();
   //const statusResult = status.then(data => data)
 
-  return (
+  return ( 
     <>
        <div className="container">
         <div className="header">
