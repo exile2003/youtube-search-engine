@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect, memo, useRef } from 'react'
 import {GridLoader, RingLoader} from 'react-spinners'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
@@ -14,13 +14,16 @@ let resource;
 
 function App3() {
 
-  const [title, setTitle] = useState('');
-  const [channel, setChannel] = useState('');
+  //const [title, setTitle] = useState('');
+  //const [channel, setChannel] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [items, setItems] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const txtTitle = useRef();
+  const txtChannel = useRef();
 
 /*
   const handleChannel = (event) => {
@@ -86,6 +89,9 @@ function App3() {
 
     tempDB = [];
 
+    const title = txtTitle.current.value;
+    const channel = txtChannel.current.value;
+
     tempDB = youtubeDB
                 .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
                 .filter(item => item.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
@@ -139,11 +145,11 @@ function App3() {
         <form onSubmit={handleSubmit}>
           <div>
             <label>Название:&nbsp;&nbsp;</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input ref ={txtTitle} type="text" /> {/*onChange={(e) => setTitle(e.target.value)}*/}
           </div>
           <div>
             <label>Название канала:&nbsp;&nbsp;</label>
-            <input type="text" value={channel} onChange={throttle((e) => setChannel(e.target.value), 1000)} />
+            <input ref ={txtChannel} type="text" /> {/*  onChange={throttle((e) => setChannel(e.target.value), 1000)} */}
           </div>
           <div>
             <label>Дата:&nbsp;&nbsp;</label>
