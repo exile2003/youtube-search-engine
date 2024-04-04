@@ -3,6 +3,7 @@ import {GridLoader, RingLoader} from 'react-spinners'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
 import './App.css'
+import ListItems from './components/ListItems'
 
 let youtubeDB = [];
 let tempDB =[];
@@ -164,9 +165,7 @@ function App2() {
           </div>
           <button type="submit">Искать</button>
         </form>
-        <ul>
-          {items?.map(item => <ListItem item={item} />)}
-        </ul>
+        <ListItems items={items} />
       </div>
     </> 
         
@@ -174,21 +173,3 @@ function App2() {
 }
 
 export default App2
-
-function ListItem({ item }) {
-
-    const getId = (arg) => {
-        const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + String(Math.floor(Math.random()*1000));
-       // console.log("getid", getid);
-        return Number(getid)
-      }
-
-    return (
-        <li key={getId(item.date)} >
-        <a href = {item.titleLink}>{item.title}</a> - 
-        <a href = {item.channelLink}>{item.channel}</a> - 
-        {moment(item.date, 'MMMM DD, YYYY, HH:mm:ss').format('MMMM-DD-YYYY')}
-        </li>
-    )
-    
-}

@@ -7,9 +7,9 @@ import {GridLoader} from 'react-spinners'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Suspense fallback={<GridLoader />}>
-  {/* <React.StrictMode> */}
+  //<Suspense fallback={<GridLoader />}>
+  // {/* <React.StrictMode> */}
     <App2 />
-  {/* </React.StrictMode> */}
-  </Suspense>,
+  //{/* </React.StrictMode> */}
+  // </Suspense>,
 )
