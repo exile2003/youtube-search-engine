@@ -1,126 +1,194 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useRef, useCallback } from 'react'
+import {GridLoader, RingLoader} from 'react-spinners'
+import moment from 'moment'
+import { debounce, throttle } from 'lodash'
 import './App.css'
 
-let youtubeDB = []
+let youtubeDB = [];
+let tempDB =[];
 
-function App() {
+let error, response = false;
 
-  const [input, setInput] = useState('');
+let resource;
+
+
+function App2() {
+
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [items, setItems] = useState([]);
 
-  const updateDataBase = (e) => {
-      getFile(e)
+  const [isLoading, setIsLoading] = useState(false);
+
+  //const txtTitle = useRef();
+  //const txtChannel = useRef();
+
+  //let title;
+  //let channel;
+
+/*
+  const handleChannel = (event) => {
+    const { value } = event.target;
+    setChannel(value);
   }
 
 
-  const getFile = (e) => {
-    const inputFile = e.target.files[0];
-    const reader = new FileReader();
-  
-    reader.readAsText(inputFile);
-    reader.onload = (event) => {
-      const fileContent = event.target.result;
-  
-      // Parsing the content of the input file and assign result to domTree variable
-      const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
-  
-      // Pass the content of tag body to function elementIteration for adding dates
-      //elementIteration(domTree.getElementsByTagName('body')[0]);
+  function handleChannel(event) {
+    const { value } = event.target;
+    setChannel(value);
+  }
+*/
 
-      const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
+  const handleFileUpload =  useCallback((event) => {
+    setIsLoading(true);
+    const file = event.target.files[0];
 
-      allSelectors.forEach(item => item.children[0] && youtubeDB.push({
-        title: item.children[0]?.textContent,
-        channel: item.children[2]?.textContent,
-        date: item.lastChild?.textContent
-      }));
+    // Здесь можно выполнить логику загрузки файла
+    try {
+      // Предположим, что у вас есть функция для загрузки файла
+            if(file) getFile(file);
+    } catch (error) {
+      console.error('Ошибка загрузки файла:', error);
+    } finally {
+      //setIsLoading(false);
+    }
+  },[])
+
+  const getFile = (file) => {
+    
+        //const inputFile = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsText(file);
       
-      //const arrayTitle = domTree.querySelectorAll('.content-cell')[0].children
-      //const textValue = domTree.querySelectorAll('.content-cell')[0].lastChild.textContent
+        reader.onload = (event) => {
+          const fileContent = event.target.result;
+      
+          // Parsing the content of the input file and assign result to domTree variable
+          const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
+      
+          // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
+          const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
 
-      console.log("Yes!")
-    };
+          allSelectors.forEach(item => item.children[0] && youtubeDB.push({
+            title: item.children[0]?.textContent,
+            titleLink: item.children[0]?.href,
+            channel: item.children[2]?.textContent,
+            channelLink: item.children[2]?.href,
+            date: item.lastChild?.textContent
+          }));
+          
+          console.log("Yes!", youtubeDB);
+          setIsLoading(false)
+        }    
   }
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
+  const handleSubmit =  (event) => {
 
-  const handleChannelChange = (event) => {
-    setChannel(event.target.value);
-  };
+    setIsLoading(true);
 
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
-  };
-
-  const handleTimeChange = (event) => {
-    setTime(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
     event.preventDefault();
-    // Здесь можно выполнить какую-то логику поиска
+
+    tempDB = [];
+
+    //title = txtTitle.current.value;
+    //channel = txtChannel.current.value;
+
+    tempDB = youtubeDB
+                .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
+                .filter(item => item.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
+                .filter(item => 
+                  item.date&&dateFrom 
+                    ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
+                    : true
+                )
+                .filter(item => 
+                  item.date&&dateTo 
+                    ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
+                    : true
+                )
+              //  .filter(item => { setIsLoading(false); return true })
+
+    setItems(tempDB)
+    setTimeout(() => setIsLoading(false), 0)
+
     console.log('Название:', title);
-    console.log('Дата:', date);
-    console.log('Время:', time);
-  };
+    console.log('Канал:', channel);
+    console.log('Дата:', dateFrom, dateTo);
+    console.log("youtubeDB", youtubeDB);
+    console.log("tempDB", tempDB);
+    console.log("items", items);
+    console.log("----------------------------------")
+    console.log("item.date", moment(items[1]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix())
+    console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
+    console.log("isLoading", isLoading)
+    //console.log("txtTitle", txtTitle.current?.value)
 
-  const inputSearch = document.getElementById('searchTitle')
+  }
 
-  useEffect(() => {
-    console.log(items);
-    setItems(youtubeDB.filter(item => item.title?.toLowerCase().includes(title.toLowerCase())))
-}, [title])
+  //const PureListItem = memo(ListItem)
+  
+ 
 
-useEffect(() => {
-  console.log(items);
-  setItems(youtubeDB.filter(item => item.channel?.toLowerCase().includes(channel.toLowerCase())))
-}, [channel])
+     if (isLoading) return <>
+        <div className="spinner"><RingLoader /></div>
+        {/* <div className="spinner2"></div> */}
+     </>
 
-
-
-  return (
+  return ( 
     <>
-      <div className="container">
+       <div className="container">
         <div className="header">
           <h2>Youtube videos</h2>
           <label htmlFor="chooseFile">
-            <input onChange= {getFile} type="file" name="chooseFile" id="chooseFile"  />
-            <button onClick = {updateDataBase}>Обновить базу данных</button>
+            <input onChange= {handleFileUpload} type="file" name="chooseFile" id="chooseFile"  />
+            <button >Обновить базу данных</button>
           </label>
-          
-        </div>
+       </div>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Название:&nbsp;&nbsp;</label>
-            <input type="text" value={title} onChange={handleTitleChange} />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div>
             <label>Название канала:&nbsp;&nbsp;</label>
-            <input type="text" value={channel} onChange={handleChannelChange} />
+            <input type="text" value={channel} onChange={throttle((e) => setChannel(e.target.value), 1000)} />
           </div>
           <div>
             <label>Дата:&nbsp;&nbsp;</label>
-            <input type="date" value={date} onChange={handleDateChange} />
-          </div>
-          <div>
-            <label>Время:&nbsp;&nbsp;</label>
-            <input type="time" value={time} onChange={handleTimeChange} />
+            от&nbsp;
+            <input type="date" onChange={debounce((e) => setDateFrom(e.target.value), 100)} />
+            &nbsp;до&nbsp;
+            <input type="date" onChange={debounce((e) => setDateTo(e.target.value), 100)} />
           </div>
           <button type="submit">Искать</button>
         </form>
         <ul>
-          {items.map(item =>  <li>{item.title} - {item.channel} - {item.date}</li> )}
+          {items?.map(item => <ListItem item={item} />)}
         </ul>
       </div>
-    </>
-          
+    </> 
+        
   )
 }
 
-export default App
+export default App2
+
+function ListItem({ item }) {
+
+    const getId = (arg) => {
+        const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + String(Math.floor(Math.random()*1000));
+       // console.log("getid", getid);
+        return Number(getid)
+      }
+
+    return (
+        <li key={getId(item.date)} >
+        <a href = {item.titleLink}>{item.title}</a> - 
+        <a href = {item.channelLink}>{item.channel}</a> - 
+        {moment(item.date, 'MMMM DD, YYYY, HH:mm:ss').format('MMMM-DD-YYYY')}
+        </li>
+    )
+    
+}

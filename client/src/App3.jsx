@@ -25,6 +25,9 @@ function App3() {
   const txtTitle = useRef();
   const txtChannel = useRef();
 
+  let title;
+  let channel;
+
 /*
   const handleChannel = (event) => {
     const { value } = event.target;
@@ -89,8 +92,8 @@ function App3() {
 
     tempDB = [];
 
-    const title = txtTitle.current.value;
-    const channel = txtChannel.current.value;
+    title = txtTitle.current.value;
+    channel = txtChannel.current.value;
 
     tempDB = youtubeDB
                 .filter(item => item.title?.toLowerCase().includes(title.trim().toLowerCase()))
@@ -120,6 +123,7 @@ function App3() {
     console.log("item.date", moment(items[1]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix())
     console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
     console.log("isLoading", isLoading)
+    console.log("txtTitle", txtTitle.current?.value)
 
   };
 
@@ -145,7 +149,7 @@ function App3() {
         <form onSubmit={handleSubmit}>
           <div>
             <label>Название:&nbsp;&nbsp;</label>
-            <input ref ={txtTitle} type="text" /> {/*onChange={(e) => setTitle(e.target.value)}*/}
+            <input ref ={txtTitle} type="text" value={txtTitle.current?.value} /> {/*onChange={(e) => setTitle(e.target.value)}*/}
           </div>
           <div>
             <label>Название канала:&nbsp;&nbsp;</label>
