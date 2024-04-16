@@ -22,17 +22,16 @@ function App2() {
 
     const updateIsLoading = useCallback((value) => {
       setIsLoading(value)
-  }, [])
+    }, [])
 
-  const updateTitle = useCallback((value) => {
-    setTitle(value)
-}, [])
+    const updateTitle = useCallback((value) => {
+      setTitle(value)
+    }, [])
 
 const updateChannel = useCallback((value) => {
   setChannel(value)
 }, [])
  
-  
 
      if (isLoading) return <>
         <div className="spinner"><RingLoader /></div>
