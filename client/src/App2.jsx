@@ -28,9 +28,9 @@ function App2() {
       setTitle(value)
     }, [])
 
-const updateChannel = useCallback((value) => {
-  setChannel(value)
-}, [])
+    const updateChannel = useCallback((value) => {
+      setChannel(value)
+    }, [])
  
 
      if (isLoading) return <>
