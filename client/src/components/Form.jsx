@@ -9,8 +9,8 @@ let tempDB =[];
 
 
 function Form({
-  updateDateFrom,
-  updateDateTo,
+      updateDateFrom,
+      updateDateTo,
       updateItems, 
       updateIsLoading, 
       updateTitle, 

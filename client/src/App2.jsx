@@ -19,42 +19,30 @@ function App2() {
   const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
   const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
-    // const updateDateFrom = useCallback(
-    //   setDateFrom
-    // , [])
+    const updateDateFrom = useCallback(
+      setDateFrom
+    , [])
 
-    const updateDateFrom = setDateFrom
+    const updateDateTo = useCallback(
+      setDateTo, [])
 
-    // const updateDateTo = useCallback(
-    //   setDateTo, [])
+    const updateItems = useCallback(
+        setItems, [])
 
-    const updateDateTo = setDateTo
+    const updateIsLoading = useCallback(
+      setIsLoading, [])
 
-    // const updateItems = useCallback(
-    //     setItems, [])
+    const updateTitle = useCallback(
+      setTitle, [])
 
-    const updateItems = setItems
-
-    // const updateIsLoading = useCallback(
-    //   setIsLoading, [])
-
-    const updateIsLoading = setIsLoading
-
-    // const updateTitle = useCallback(
-    //   setTitle, [])
-
-    const updateTitle = setTitle
-
-    // const updateChannel = useCallback(
-    //   setChannel, [])
-
-    const updateChannel = setChannel
+    const updateChannel = useCallback(
+      setChannel, [])
 
     // const myProps = {
     //   updateItems={updateItems} updateIsLoading={updateIsLoading} updateTitle={updateTitle} updateChannel={updateChannel} title={title} channel={channel}
     // }
  
-    const myProps = {
+    const myProps = useMemo(() => ({
         updateDateFrom,
         updateDateTo,
         updateItems, 
@@ -65,8 +53,14 @@ function App2() {
         dateTo, 
         title, 
         channel
-    }
+    }), [
+      dateFrom,
+        dateTo, 
+        title, 
+        channel
+    ])
  
+
      if (isLoading) return <>
         <div className="spinner"><RingLoader /></div>
         {/* <div className="spinner2"></div> */}
