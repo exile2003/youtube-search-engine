@@ -28,6 +28,8 @@ const PureListItem = memo(ListItem)
 
 function ListItems({ items }) {
 
+  useEffect(() => console.count("render ListItems"))
+
     return (
         <div className="container" >
           <ul>
