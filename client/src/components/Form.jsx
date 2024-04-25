@@ -9,19 +9,24 @@ let tempDB =[];
 
 
 function Form({
+  updateDateFrom,
+  updateDateTo,
       updateItems, 
       updateIsLoading, 
       updateTitle, 
-      updateChannel, 
+      updateChannel,
+      dateFrom,
+      dateTo, 
       title, 
       channel}) {
 
   // const [title, setTitle] = useState('');
   // const [channel, setChannel] = useState('');
-  const [dateFrom, setDateFrom] = useState(() => '2020-01-01');
-  const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
+  //const [dateFrom, setDateFrom] = useState(() => '2020-01-01');
+  //const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
+  //const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileUpload =  useCallback((event) => {
+  const handleFileUpload = (event) => {
     updateIsLoading(true);
     const file = event.target.files[0];
 
@@ -34,7 +39,7 @@ function Form({
     } finally {
       //setIsLoading(false);
     }
-  }, [])
+  }
 
   const getFile = (file) => {
     
@@ -64,11 +69,10 @@ function Form({
         }    
   }
 
-  const handleSubmit =  (event) => {
-
-    updateIsLoading(true);
-
+  const handleSubmit = (event) => {
+    
     event.preventDefault();
+    updateIsLoading(true);
 
     tempDB = [];
 
@@ -96,6 +100,7 @@ function Form({
     console.log('Название:', title);
     console.log('Канал:', channel);
     console.log('Дата:', dateFrom, dateTo);
+    console.log(typeof dateFrom);
     console.log("youtubeDB", youtubeDB);
     console.log("tempDB", tempDB);
     //console.log("items", items);
@@ -131,9 +136,9 @@ function Form({
           <div>
             <label>Дата:&nbsp;&nbsp;</label>
             от&nbsp;
-            <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+            <input type="date" value={dateFrom} onChange={(e) => updateDateFrom(e.target.value)} />
             &nbsp;до&nbsp;
-            <input type="date" value={dateTo} onChange={debounce((e) => setDateTo(e.target.value), 100)} />
+            <input type="date" value={dateTo} onChange={(e) => updateDateTo(e.target.value)} />
           </div>
           <button type="submit">Искать</button>
         </form>

@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useRef, useCallback } from 'react'
+import { useState, useEffect, memo, useRef, useCallback, useMemo } from 'react'
 import {GridLoader, RingLoader} from 'react-spinners'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
@@ -16,28 +16,55 @@ function App2() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-    const updateItems = useCallback((value) => {
-        setItems(value)
-    }, [])
+  const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
+  const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
-    const updateIsLoading = useCallback((value) => {
-      setIsLoading(value)
-    }, [])
+    // const updateDateFrom = useCallback(
+    //   setDateFrom
+    // , [])
 
-    const updateTitle = useCallback((value) => {
-      setTitle(value)
-    }, [])
+    const updateDateFrom = setDateFrom
 
-    const updateChannel = useCallback((value) => {
-      setChannel(value)
-    }, [])
+    // const updateDateTo = useCallback(
+    //   setDateTo, [])
+
+    const updateDateTo = setDateTo
+
+    // const updateItems = useCallback(
+    //     setItems, [])
+
+    const updateItems = setItems
+
+    // const updateIsLoading = useCallback(
+    //   setIsLoading, [])
+
+    const updateIsLoading = setIsLoading
+
+    // const updateTitle = useCallback(
+    //   setTitle, [])
+
+    const updateTitle = setTitle
+
+    // const updateChannel = useCallback(
+    //   setChannel, [])
+
+    const updateChannel = setChannel
 
     // const myProps = {
     //   updateItems={updateItems} updateIsLoading={updateIsLoading} updateTitle={updateTitle} updateChannel={updateChannel} title={title} channel={channel}
     // }
  
     const myProps = {
-      updateItems, updateIsLoading, updateTitle, updateChannel, title, channel
+        updateDateFrom,
+        updateDateTo,
+        updateItems, 
+        updateIsLoading, 
+        updateTitle, 
+        updateChannel,
+        dateFrom,
+        dateTo, 
+        title, 
+        channel
     }
  
 
