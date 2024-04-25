@@ -8,12 +8,18 @@ let youtubeDB = [];
 let tempDB =[];
 
 
-function Form({updateItems, updateIsLoading, updateTitle, updateChannel, title, channel}) {
+function Form({
+      updateItems, 
+      updateIsLoading, 
+      updateTitle, 
+      updateChannel, 
+      title, 
+      channel}) {
 
   // const [title, setTitle] = useState('');
   // const [channel, setChannel] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [dateFrom, setDateFrom] = useState(() => '2020-01-01');
+  const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
   const handleFileUpload =  useCallback((event) => {
     updateIsLoading(true);
@@ -84,7 +90,7 @@ function Form({updateItems, updateIsLoading, updateTitle, updateChannel, title, 
                 )
               //  .filter(item => { setIsLoading(false); return true })
 
-    updateItems(tempDB)
+              updateItems(tempDB)
     setTimeout(() => updateIsLoading(false), 0)
 
     console.log('Название:', title);
@@ -125,9 +131,9 @@ function Form({updateItems, updateIsLoading, updateTitle, updateChannel, title, 
           <div>
             <label>Дата:&nbsp;&nbsp;</label>
             от&nbsp;
-            <input type="date" onChange={debounce((e) => setDateFrom(e.target.value), 100)} />
+            <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
             &nbsp;до&nbsp;
-            <input type="date" onChange={debounce((e) => setDateTo(e.target.value), 100)} />
+            <input type="date" value={dateTo} onChange={debounce((e) => setDateTo(e.target.value), 100)} />
           </div>
           <button type="submit">Искать</button>
         </form>

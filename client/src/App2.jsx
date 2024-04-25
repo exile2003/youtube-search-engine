@@ -31,6 +31,14 @@ function App2() {
     const updateChannel = useCallback((value) => {
       setChannel(value)
     }, [])
+
+    // const myProps = {
+    //   updateItems={updateItems} updateIsLoading={updateIsLoading} updateTitle={updateTitle} updateChannel={updateChannel} title={title} channel={channel}
+    // }
+ 
+    const myProps = {
+      updateItems, updateIsLoading, updateTitle, updateChannel, title, channel
+    }
  
 
      if (isLoading) return <>
@@ -40,7 +48,7 @@ function App2() {
 
   return ( 
     <>
-      <PureForm updateItems={updateItems} updateIsLoading={updateIsLoading} updateTitle={updateTitle} updateChannel={updateChannel} title={title} channel={channel} />
+      <PureForm {...myProps} />
       <ListItems items={items} />
     </>       
   )
