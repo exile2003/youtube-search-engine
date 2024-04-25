@@ -67,7 +67,6 @@ function App2() {
         channel
     }
  
-
      if (isLoading) return <>
         <div className="spinner"><RingLoader /></div>
         {/* <div className="spinner2"></div> */}
