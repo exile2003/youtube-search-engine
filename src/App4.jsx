@@ -3,7 +3,7 @@ import {GridLoader, RingLoader} from 'react-spinners'
 import moment from 'moment'
 import {nanoid} from 'nanoid'
 import { debounce, throttle } from 'lodash'
-import './App.css'
+//import './App.css'
 
 let youtubeDB = [];
 let tempDB =[];

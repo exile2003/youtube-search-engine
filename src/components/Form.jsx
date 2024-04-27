@@ -1,7 +1,7 @@
 import { useState, useEffect, memo, useRef, useCallback } from 'react'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
-import '../App.css'
+//import '../App.css'
 
 
 let youtubeDB = [];

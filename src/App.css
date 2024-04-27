@@ -21,10 +21,6 @@ body {
   align-items: center;
 }
 
-/* #chooseFile {
-  display:;
-} */
-
 .header label {
   grid-column-start: 4;
   z-index: 1;
