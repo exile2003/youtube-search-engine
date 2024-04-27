@@ -1,13 +1,10 @@
-import { useState, useEffect, memo, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
 import '../App.css'
 
-
 let youtubeDB = [];
 let tempDB = [];
-let newTempDB = [];
-
 
 function Form({ 
       updateItems, 
@@ -18,34 +15,20 @@ function Form({
     const [channel, setChannel] = useState('');
     const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
     const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
-  //const [isLoading, setIsLoading] = useState(false);
 
-      //let title2, channel2, dateFrom2, dateTo2;
-
-     const titlePrevious = useRef(null);
-     const channelPrevious = useRef(null);
-     const dateFromPrevious = useRef(null);
-     const dateToPrevious = useRef(null);
-
-    //const [title2, setTitle2] = useState('');
-  /*  const [channel2, setChannel2] = useState('');
-    const [dateFrom2, setDateFrom2] = useState(() => '2017-01-01');
-    const [dateTo2, setDateTo2] = useState(() => moment().format('YYYY-MM-DD'));
-*/
-    useEffect(() => console.log("render Form", "channel: ", channel))
+    const titlePrevious = useRef(null);
+    const channelPrevious = useRef(null);
+    const dateFromPrevious = useRef(null);
+    const dateToPrevious = useRef(null);
 
   const handleFileUpload = (event) => {
-    //updateIsLoading(true);
+
     const file = event.target.files[0];
 
-    // Здесь можно выполнить логику загрузки файла
     try {
-      // Предположим, что у вас есть функция для загрузки файла
-            if(file) getFile(file);
+      if(file) getFile(file);
     } catch (error) {
       console.error('Ошибка загрузки файла:', error);
-    } finally {
-      //setIsLoading(false);
     }
   }
 
@@ -55,7 +38,6 @@ function Form({
 
         youtubeDB = [];
 
-        //const inputFile = e.target.files[0];
         const reader = new FileReader();
         reader.readAsText(file);
       
@@ -67,6 +49,7 @@ function Form({
           // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
           const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
 
+          // Form the youtubeDB array with youtube videos data
           allSelectors.forEach(item => item.children[0] && youtubeDB.push({
             title: item.children[0]?.textContent,
             titleLink: item.children[0]?.href,
@@ -75,7 +58,7 @@ function Form({
             date: item.lastChild?.textContent
           }));
           
-          console.log("Yes!", youtubeDB);
+         // console.log("Yes!", youtubeDB);
           updateIsLoading(false)
         }    
   }
@@ -83,19 +66,15 @@ function Form({
   const handleSubmit = (event) => {
     
     event.preventDefault();
-    
-
-    //tempDB = [];
-    //updateItems(tempDB)
-
+ 
     if(
       title != titlePrevious.current |
-      channel != channelPrevious |
-      dateFrom != dateFromPrevious |
-      dateTo != dateToPrevious
+      channel != channelPrevious.current |
+      dateFrom != dateFromPrevious.current |
+      dateTo != dateToPrevious.current
     ) {
       updateIsLoading(true);
-      console.log("updateItems");
+
       tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
       updateItems(tempDB);
 
@@ -107,43 +86,17 @@ function Form({
       setTimeout(() => updateIsLoading(false), 0);
     };
 
-    //title = txtTitle.current.value;
-    //channel = txtChannel.current.value;
-
-    
-   // setTitle2(title);
-   // setChannel2(channel);
-   // setDateFrom2(dateFrom);
-   // setDateTo2(dateTo)
-
-    //updateItems(newTempDB);
-    //setTimeout(() => updateItems(tempDB), 0);
-    
-
     console.log('Название:', title);
     console.log('Канал:', channel);
     console.log('Дата:', dateFrom, dateTo);
-    console.log(typeof dateFrom);
     console.log("youtubeDB", youtubeDB);
     console.log("tempDB", tempDB);
-    //console.log("items", items);
     console.log("----------------------------------")
-    //console.log("item.date", moment(items[1]?.date, 'MMMM DD, YYYY, HH:mm:ss').unix())
     console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
-    //console.log("isLoading", isLoading)
-    //console.log("txtTitle", txtTitle.current?.value)
-    //console.log('channel2: ', channel2);
-    //console.log("newTempDB", newTempDB);
-
-
+    console.log('titlePrevious: ', titlePrevious);
+    console.log('channelPrevious: ', channelPrevious);
   }
 
-  /*
-  useMemo(() => {
-    newTempDB = filterYoutubeDB(youtubeDB, title2, channel2, dateFrom2, dateTo2);
-    updateItems(newTempDB);
-  }, [title, channel, dateFrom, dateTo]);
-*/
   function filterYoutubeDB (youtubeDB, title, channel, dateFrom, dateTo) {
        const result = youtubeDB
                 .filter(item => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
@@ -161,8 +114,6 @@ function Form({
         return result
   }
 
-
-    
     return (
       <div className="container">
         <div className="header">
