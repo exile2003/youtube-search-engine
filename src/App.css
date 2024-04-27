@@ -91,12 +91,14 @@ button:focus {
 }
 
 
+/*
+
 .spinner2 {
   margin: 0;
   position: absolute;
   top: calc(50% - 19px);
   left: calc(50% - 19px);
-  /* transform: translate(-50%, -50%); */
+  /*transform: translate(-50%, -50%);
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left: 4px solid #3498db;
   border-radius: 50%;
@@ -113,3 +115,5 @@ button:focus {
     transform: rotate(360deg);
   }
 }
+
+*/
