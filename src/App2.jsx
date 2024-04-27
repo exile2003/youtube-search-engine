@@ -2,7 +2,7 @@ import { useState, useEffect, memo, useRef, useCallback, useMemo } from 'react'
 import {GridLoader, RingLoader} from 'react-spinners'
 import moment from 'moment'
 import { debounce, throttle } from 'lodash'
-import './App.css'
+//import './App.css'
 import ListItems from './components/ListItems'
 import Form from './components/Form'
 

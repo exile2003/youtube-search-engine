@@ -1,20 +1,9 @@
 import React, { useState, useEffect, memo, useRef, useCallback } from 'react'
 import moment from 'moment'
-import { nanoid } from 'nanoid'
-import '../App.css'
-
-
-
 
 function ListItem({ item }) {
 
-    const getId = (arg) => {
-        const getid =  moment(arg, 'MMMM DD, YYYY, HH:mm:ss').unix() + nanoid();//String(Math.floor(Math.random()*1000000));
-       // console.log("getid", getid);
-        return getid
-      }
-
-    return (
+   return (
         <li>
           <a href = {item.titleLink}>{item.title}</a> - 
           <a href = {item.channelLink}>{item.channel}</a> - 
