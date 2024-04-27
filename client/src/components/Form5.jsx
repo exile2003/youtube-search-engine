@@ -21,9 +21,14 @@ function Form({
   //const [isLoading, setIsLoading] = useState(false);
 
       //let title2, channel2, dateFrom2, dateTo2;
-/*
-    const [title2, setTitle2] = useState('');
-    const [channel2, setChannel2] = useState('');
+
+     const titlePrevious = useRef(null);
+     const channelPrevious = useRef(null);
+     const dateFromPrevious = useRef(null);
+     const dateToPrevious = useRef(null);
+
+    //const [title2, setTitle2] = useState('');
+  /*  const [channel2, setChannel2] = useState('');
     const [dateFrom2, setDateFrom2] = useState(() => '2017-01-01');
     const [dateTo2, setDateTo2] = useState(() => moment().format('YYYY-MM-DD'));
 */
@@ -78,25 +83,42 @@ function Form({
   const handleSubmit = (event) => {
     
     event.preventDefault();
-    updateIsLoading(true);
+    
 
-    tempDB = [];
-    updateItems(tempDB);
+    //tempDB = [];
+    //updateItems(tempDB)
+
+    if(
+      title != titlePrevious.current |
+      channel != channelPrevious |
+      dateFrom != dateFromPrevious |
+      dateTo != dateToPrevious
+    ) {
+      updateIsLoading(true);
+      console.log("updateItems");
+      tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+      updateItems(tempDB);
+
+      titlePrevious.current = title;
+      channelPrevious.current = channel;
+      dateFromPrevious.current = dateFrom;
+      dateToPrevious.current = dateTo;
+
+      setTimeout(() => updateIsLoading(false), 0);
+    };
 
     //title = txtTitle.current.value;
     //channel = txtChannel.current.value;
 
-    tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
-
+    
    // setTitle2(title);
    // setChannel2(channel);
    // setDateFrom2(dateFrom);
    // setDateTo2(dateTo)
 
-   updateItems(tempDB)
     //updateItems(newTempDB);
     //setTimeout(() => updateItems(tempDB), 0);
-    setTimeout(() => updateIsLoading(false), 0);
+    
 
     console.log('Название:', title);
     console.log('Канал:', channel);
@@ -110,7 +132,6 @@ function Form({
     console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
     //console.log("isLoading", isLoading)
     //console.log("txtTitle", txtTitle.current?.value)
-    //console.log('title2: ', title2);
     //console.log('channel2: ', channel2);
     //console.log("newTempDB", newTempDB);
 
