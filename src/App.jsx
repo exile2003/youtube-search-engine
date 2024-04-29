@@ -25,7 +25,7 @@ function App() {
     
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([{title:"one", chan: "chanOne"}, {title2:"two", chan2: "chanTwo"}]);
   const [isLoading, setIsLoading] = useState(false);
 
   //const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
@@ -39,12 +39,18 @@ function App() {
     //   setDateTo, [])
 
      const updateItems = useCallback(
-         (value) => setItems(value), [])
+         (value) => {
+          setItems(value);
+          console.log("change items")
+      }, [])
 
     //    const updateItems = setItems;
 
      const updateIsLoading = useCallback(
-         (value) => setIsLoading(value), [])
+         (value) => {
+          setIsLoading(value);
+          console.log("change isLoading", value)
+      }, [])
 
      //   const updateIsLoading = setIsLoading;
 
@@ -80,8 +86,8 @@ function App() {
     <>
     {isLoading && <div className="spinner"><RingLoader /></div>}
       <div style = {isLoading ? {display: 'none'} : {}}>
-        <MemoForm updateItems={setItems} updateIsLoading={setIsLoading} />
-        <ListItems items={items} />
+        <MemoForm updateItems={updateItems} updateIsLoading={updateIsLoading} />
+        <MemoListItems items={items} />
       </div>
     </>       
   )
