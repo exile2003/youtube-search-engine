@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import moment from 'moment'
+//import { unstable_trace as trace } from 'scheduler/tracing'
 //import { debounce, throttle } from 'lodash'
 
 let youtubeDB = [];
@@ -19,6 +20,9 @@ function Form({
     const channelPrevious = useRef(null);
     const dateFromPrevious = useRef(null);
     const dateToPrevious = useRef(null);
+    const itemsPrevious = useRef(null);
+
+    useEffect(() => console.count("render Form"))
 
     const handleFileUpload = (event) => {
 
@@ -33,7 +37,7 @@ function Form({
 
     const getFile = (file) => {
     
-        updateIsLoading(true);
+       updateIsLoading(true);
 
         youtubeDB = [];
 
@@ -73,15 +77,26 @@ function Form({
           dateFrom != dateFromPrevious.current |
           dateTo != dateToPrevious.current
         ) {
-          updateIsLoading(false);
+          /*
+          trace(
+            `updateIsLoading to true`,
+            event.timeStamp,
+            () => updateIsLoading(true);
+          );
+          */
+          updateIsLoading(true);
 
           tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
           updateItems(tempDB);
+          
+          console.log("items == itemsPrevious", tempDB == itemsPrevious.current)
 
           titlePrevious.current = title;
           channelPrevious.current = channel;
           dateFromPrevious.current = dateFrom;
           dateToPrevious.current = dateTo;
+
+          itemsPrevious.current = tempDB;
 
           setTimeout(() => updateIsLoading(false), 0);
         };
@@ -91,6 +106,7 @@ function Form({
         console.log('Дата:', dateFrom, dateTo);
         console.log("youtubeDB", youtubeDB);
         console.log("tempDB", tempDB);
+        console.log("itemsPrevious", itemsPrevious.current);
         console.log("----------------------------------")
         console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
         console.log('titlePrevious: ', titlePrevious);
