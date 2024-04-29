@@ -21,7 +21,7 @@ function renderByAnyKey() {
 
 function App() {
 
-    renderByAnyKey()
+    //renderByAnyKey()
     
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
@@ -81,7 +81,7 @@ function App() {
     {isLoading && <div className="spinner"><RingLoader /></div>}
       <div style = {isLoading ? {display: 'none'} : {}}>
         <MemoForm updateItems={setItems} updateIsLoading={setIsLoading} />
-        <MemoListItems items={items} />
+        <ListItems items={items} />
       </div>
     </>       
   )

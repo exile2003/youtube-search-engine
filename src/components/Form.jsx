@@ -73,7 +73,7 @@ function Form({
           dateFrom != dateFromPrevious.current |
           dateTo != dateToPrevious.current
         ) {
-          updateIsLoading(true);
+          updateIsLoading(false);
 
           tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
           updateItems(tempDB);
