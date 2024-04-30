@@ -21,19 +21,37 @@ function ListItems({ items }) {
   useEffect(() => console.count("render ListItems"))
 
     return (
-        <div className="container" >
+         <div className="container" >
+          
           <FixedSizeList
-            height={window.innerHeight}
-            width={window.innerWidth - 20}
+            innerElementType="ul"
+            height={innerHeight}
+            width={innerWidth - 60}
             itemCount={items.length}
-            itemSize={50}
+            itemSize={30}
+            itemData = {items}
           >
-            <ul>
+            
+   {/*                         
               {items?.map((item, inx) => 
                   <ListItem key={item.title + (moment(item.date, 'MMMM DD, YYYY, HH:mm:ss').unix()).toString()} item={item} />
                   // <MemoListItem key={inx} item={item} />
-              )}         
-            </ul>
+              )}          
+     */}      
+
+          {({data, index, style}) => (
+          
+         
+            <li style={style} >
+              <a href = {data[index].titleLink}>{data[index].title}</a> - 
+              <a href = {data[index].channelLink}>{data[index].channel}</a> - 
+              {moment(data[index].date, 'MMMM DD, YYYY, HH:mm:ss').format('MMMM-DD-YYYY HH:mm:ss')}  
+              
+            </li>
+        
+          )}
+   
+            
           </FixedSizeList>
           
         </ div>      
