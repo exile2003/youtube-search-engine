@@ -21,15 +21,16 @@ function ListItems({ items }) {
   useEffect(() => console.count("render ListItems"))
 
     return (
-         <div className="container" >
+         <div className="result" >
           
           <FixedSizeList
             innerElementType="ul"
-            height={innerHeight}
-            width={innerWidth - 60}
+            height={innerHeight - 300}
+            width={innerWidth -40}
             itemCount={items.length}
             itemSize={30}
             itemData = {items}
+            style = {{overflowX: 'hidden', }}
           >
             
    {/*                         

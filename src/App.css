@@ -90,6 +90,11 @@ button:focus {
   transform: translate(-50%, -50%);
 }
 
+.amount {
+  display: flex;
+  font-weight: bold;
+  margin-left: 50px;
+}
 
 /*
 
