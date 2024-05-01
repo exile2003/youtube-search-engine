@@ -16,6 +16,8 @@ function Form({
     const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
     const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
+    const [amount, setAmount] = useState(0)
+
     const titlePrevious = useRef(null);
     const channelPrevious = useRef(null);
     const dateFromPrevious = useRef(null);
@@ -68,7 +70,7 @@ function Form({
     }
 
     const handleSubmit = (event) => {
-    
+        updateIsLoading(true);
         event.preventDefault();
  
         if(
@@ -84,9 +86,10 @@ function Form({
             () => updateIsLoading(true);
           );
           */
-          updateIsLoading(true);
+          
 
           tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+          setAmount(tempDB.length);
           updateItems(tempDB);
           
           console.log("items == itemsPrevious", tempDB == itemsPrevious.current)
@@ -98,8 +101,10 @@ function Form({
 
           itemsPrevious.current = tempDB;
 
-          setTimeout(() => updateIsLoading(false), 0);
+          
         };
+
+        setTimeout(() => updateIsLoading(false), 0);
 
         console.log('Название:', title);
         console.log('Канал:', channel);
@@ -156,7 +161,12 @@ function Form({
             &nbsp;до&nbsp;
             <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
           </div>
-          <button type="submit">Искать</button>
+         
+            <button type="submit">Искать</button>
+          <div className="amount" >
+          {(amount) ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
+          </div>
+          
         </form>
       </div>
     )
