@@ -139,33 +139,39 @@ function Form({
       <div className="container">
         <div className="header">
           <h2>Youtube videos</h2>
-          <label htmlFor="chooseFile">
-            <input onChange= {handleFileUpload} type="file" name="chooseFile" id="chooseFile"  />
-            <button >Обновить базу данных</button>
+         
+          <input type="file" id="chooseFile" onChange={handleFileUpload} />
+          
+          <label htmlFor="chooseFile" className="custom-file-download" >
+            Обновить базу данных
           </label>
+            
+          {/* <button >Обновить базу данных</button> */}
+          
         </div>
        
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>Название:&nbsp;&nbsp;</label>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <div >
+            <label htmlFor="name">Название:&nbsp;&nbsp;</label>
+            <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div >
+            <label htmlFor="channel">Название канала:&nbsp;&nbsp;</label>
+            <input type="text" value={channel} id="channel" onChange={(e) => setChannel(e.target.value)} />
           </div>
           <div>
-            <label>Название канала:&nbsp;&nbsp;</label>
-            <input type="text" value={channel} onChange={(e) => setChannel(e.target.value)} />
+            <label  htmlFor="dateFrom">Дата:&nbsp;&nbsp;от&nbsp;</label>
+            <input type="date" value={dateFrom} id="dateFrom" onChange={(e) => setDateFrom(e.target.value)} />
+            <label  htmlFor="dateTo">&nbsp;до&nbsp;</label>
+            <input type="date" value={dateTo} id="dateTo" onChange={(e) => setDateTo(e.target.value)} />
           </div>
-          <div>
-            <label>Дата:&nbsp;&nbsp;</label>
-            от&nbsp;
-            <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-            &nbsp;до&nbsp;
-            <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-          </div>
-         
+          <div className="search">
             <button type="submit">Искать</button>
-          <div className="amount" >
-          {(amount) ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
+            <div className="amount">
+            {(amount) ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
+            </div>
           </div>
+            
           
         </form>
       </div>

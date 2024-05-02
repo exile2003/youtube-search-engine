@@ -44,8 +44,8 @@ function ListItems({ items }) {
           
          
             <li style={style} >
-              <a href = {data[index].titleLink}>{data[index].title}</a> - 
-              <a href = {data[index].channelLink}>{data[index].channel}</a> - 
+              <a href = {data[index].titleLink}>{data[index].title}</a> - &nbsp;
+              <a href = {data[index].channelLink}>{data[index].channel}</a> - &nbsp;
               {moment(data[index].date, 'MMMM DD, YYYY, HH:mm:ss').format('MMMM-DD-YYYY HH:mm:ss')}  
               
             </li>
