@@ -82,6 +82,7 @@ body {
 
 form {
   display:grid;
+  grid-template-columns: repeat(4, 1fr);
   /* flex-direction: column; */
 }
 
@@ -142,7 +143,7 @@ button:disabled, button:hover:disabled {
 .search {
   display: grid;
   align-items: center;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 200px 1fr;
 }
 
 

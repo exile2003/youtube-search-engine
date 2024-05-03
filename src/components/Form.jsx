@@ -153,10 +153,12 @@ function Form({
         <form onSubmit={handleSubmit}>
           <div >
             <label htmlFor="name">Название:&nbsp;&nbsp;</label>
+            <div></div>
             <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div >
             <label htmlFor="channel">Название канала:&nbsp;&nbsp;</label>
+            <div></div>
             <input type="text" value={channel} id="channel" onChange={(e) => setChannel(e.target.value)} />
           </div>
           <div>
