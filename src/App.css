@@ -26,23 +26,6 @@ body {
   /* z-index: 1; */
 }
 
-.header button {
-  max-width: 190px;
-  max-height: 40px;  
-  padding: 10px 20px;
-  background-color: #3d444b;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 1;
-}
-
-/* h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-} */
-
 #chooseFile {
   visibility: hidden;
   /* position: absolute; */
@@ -87,6 +70,18 @@ form {
 }
 
 label {
+  grid-column-start: 1;
+}
+
+input{
+  grid-column-start: 2;
+}
+
+.channel {
+  grid-column-start: 1;
+}
+
+label {
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -126,14 +121,6 @@ button:disabled, button:hover:disabled {
   cursor: not-allowed;
 }
 
-.spinner {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .amount {
   /* align-content: center; */
   font-weight: bold;
@@ -145,33 +132,3 @@ button:disabled, button:hover:disabled {
   align-items: center;
   grid-template-columns: 200px 1fr;
 }
-
-
-
-
-/*
-
-.spinner2 {
-  margin: 0;
-  position: absolute;
-  top: calc(50% - 19px);
-  left: calc(50% - 19px);
-  /*transform: translate(-50%, -50%);
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #3498db;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-*/

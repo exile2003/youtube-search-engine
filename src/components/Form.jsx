@@ -145,20 +145,16 @@ function Form({
           <label htmlFor="chooseFile" className="custom-file-download" >
             Обновить базу данных
           </label>
-            
-          {/* <button >Обновить базу данных</button> */}
-          
+              
         </div>
        
         <form onSubmit={handleSubmit}>
-          <div >
-            <label htmlFor="name">Название:&nbsp;&nbsp;</label>
-            <div></div>
+          <div className="title" >
+            <label htmlFor="name">Название видео:&nbsp;&nbsp;</label>
             <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
           </div>
-          <div >
+          <div className="channel" >
             <label htmlFor="channel">Название канала:&nbsp;&nbsp;</label>
-            <div></div>
             <input type="text" value={channel} id="channel" onChange={(e) => setChannel(e.target.value)} />
           </div>
           <div>
@@ -170,7 +166,7 @@ function Form({
           <div className="search">
             <button type="submit">Искать</button>
             <div className="amount">
-            {(amount) ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
+            { !!amount ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
             </div>
           </div>
             
