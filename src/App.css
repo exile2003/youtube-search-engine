@@ -19,6 +19,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   /* grid-template-rows: 50px; */
   align-items: center;
+
 }
 
 .header label {
@@ -66,29 +67,53 @@ body {
 form {
   display:grid;
   grid-template-columns: repeat(4, 1fr);
+  /* gap: 10px; */
+  align-items: center;
   /* flex-direction: column; */
 }
 
-label {
-  grid-column-start: 1;
+.title{
+  display: grid;
+  grid-column: span 4;
+  align-items: center;
+
 }
 
-input{
+.title label {
+  grid-column-start: 1;
+  /* background-color: #00ff40; */
+}
+
+.title input {
+  /* margin: 0 0 ; */
   grid-column-start: 2;
+  /* background-color: #007bff; */
 }
 
-.channel {
+.channel{
+  display: grid;
+  grid-column: span 4;
+  align-items: center;
+
+}
+
+.channel label{
   grid-column-start: 1;
+}
+
+.channel input{
+  grid-column-start: 2;
 }
 
 label {
   font-weight: bold;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 input {
-  padding: 8px;
-  margin-bottom: 15px;
+  /* padding: 8px; */
+  /* margin-bottom: 15px; */
+  height: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
