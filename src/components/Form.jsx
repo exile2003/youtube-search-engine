@@ -15,14 +15,15 @@ function Form({
     const [channel, setChannel] = useState('');
     const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
     const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
-
-    const [amount, setAmount] = useState(0)
+    const [unique, setUnique] = useState(false);
+    const [amount, setAmount] = useState(0);
 
     const titlePrevious = useRef(null);
     const channelPrevious = useRef(null);
     const dateFromPrevious = useRef(null);
     const dateToPrevious = useRef(null);
     const itemsPrevious = useRef(null);
+    const uniquePrevious = useRef(null);
 
     useEffect(() => console.count("render Form"))
 
@@ -77,7 +78,8 @@ function Form({
           title != titlePrevious.current |
           channel != channelPrevious.current |
           dateFrom != dateFromPrevious.current |
-          dateTo != dateToPrevious.current
+          dateTo != dateToPrevious.current |
+          unique != uniquePrevious.current
         ) {
           /*
           trace(
@@ -89,8 +91,15 @@ function Form({
           
 
           tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
-          setAmount(tempDB.length);
-          updateItems(tempDB);
+          if(unique) {
+            const tempDB2 = removeDuplicates(tempDB);
+            setAmount(tempDB2.length);
+            updateItems(tempDB2);
+          } else {
+            setAmount(tempDB.length);
+            updateItems(tempDB);
+          }
+          
           
           console.log("items == itemsPrevious", tempDB == itemsPrevious.current)
 
@@ -100,6 +109,7 @@ function Form({
           dateToPrevious.current = dateTo;
 
           itemsPrevious.current = tempDB;
+          uniquePrevious.current = unique;
 
           
         };
@@ -116,6 +126,7 @@ function Form({
         console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
         console.log('titlePrevious: ', titlePrevious);
         console.log('channelPrevious: ', channelPrevious);
+        console.log('unique', unique);
     }
 
       const filterYoutubeDB = (youtubeDB, title, channel, dateFrom, dateTo) => {
@@ -135,6 +146,19 @@ function Form({
         return result
       }
 
+      const removeDuplicates = (array) => {
+        const uniqueItems = {};
+    
+        array.forEach(item => {
+          if (!uniqueItems[item.title] || uniqueItems[item.title].date > item.date) {
+            uniqueItems[item.title] = item;
+          }
+        });
+        
+        //return uniqueItems;
+        return Object.values(uniqueItems);
+      }
+
     return (
       <div className="container">
         <div className="header">
@@ -149,28 +173,33 @@ function Form({
         </div>
        
         <form onSubmit={handleSubmit}>
-          <div className="title" >
+          {/* <div className="title" > */}
             <label htmlFor="name">Название видео:&nbsp;&nbsp;</label>
             <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className="channel" >
+          {/* </div> */}
+          {/* <div className="channel" > */}
             <label htmlFor="channel">Название канала:&nbsp;&nbsp;</label>
             <input type="text" value={channel} id="channel" onChange={(e) => setChannel(e.target.value)} />
-          </div>
-          <div>
-            <label  htmlFor="dateFrom">Дата:&nbsp;&nbsp;от&nbsp;</label>
+          {/* </div> */}
+          {/* <div> */}
+            <label  htmlFor="dateFrom">
+              {/* Дата:&nbsp;&nbsp;от&nbsp; */}
+              <div id="data">Дата:</div>
+              <div id="from">от</div>
+            </label>
             <input type="date" value={dateFrom} id="dateFrom" onChange={(e) => setDateFrom(e.target.value)} />
-            <label  htmlFor="dateTo">&nbsp;до&nbsp;</label>
+            <label  htmlFor="dateTo">до</label>
             <input type="date" value={dateTo} id="dateTo" onChange={(e) => setDateTo(e.target.value)} />
-          </div>
-          <div className="search">
+          {/* </div> */}
+          {/* <div className="search"> */}
+          {/* <div></div> */}
+            <label htmlFor="checkbox">Исключить повторения</label>
+            <input type="checkbox" id="checkbox" checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
             <button type="submit">Искать</button>
             <div className="amount">
             { !!amount ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
             </div>
-          </div>
-            
-          
+          {/* </div> */}       
         </form>
       </div>
     )
