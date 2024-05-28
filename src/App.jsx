@@ -25,7 +25,7 @@ function App() {
     
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
-  const [items, setItems] = useState([{title:"one", channel: "chanOne"}, {title:"two", channel: "chanTwo"}]);
+  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   //const [dateFrom, setDateFrom] = useState(() => '2017-01-01');

@@ -1,11 +1,10 @@
 
 body {
   /* display: grid; */
-  background-image: linear-gradient(70deg, #ddf4ff 30%, #dafbe1)
+  background-image: linear-gradient(90deg, #ddf4ff 30%, #dafbe1)
 }
 
 .container {
-  
   /* max-width: 600px; */
   /* margin: 0 auto; */
   padding: 10px;
@@ -17,14 +16,11 @@ body {
   height: 80px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: 50px; */
   align-items: center;
-
 }
 
 .header label {
   grid-column-start: 4;
-  /* z-index: 1; */
 }
 
 #chooseFile {
@@ -66,56 +62,74 @@ body {
 
 form {
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  /* gap: 10px; */
+  /* grid-template-columns: repeat(6, 1fr); */
+  grid-template-columns: auto repeat(5, 1fr);
+  gap: 15px;
   align-items: center;
-  /* flex-direction: column; */
-}
-
-.title{
-  display: grid;
-  grid-column: span 4;
-  align-items: center;
-
-}
-
-.title label {
-  grid-column-start: 1;
-  /* background-color: #00ff40; */
-}
-
-.title input {
-  /* margin: 0 0 ; */
-  grid-column-start: 2;
-  /* background-color: #007bff; */
-}
-
-.channel{
-  display: grid;
-  grid-column: span 4;
-  align-items: center;
-
-}
-
-.channel label{
-  grid-column-start: 1;
-}
-
-.channel input{
-  grid-column-start: 2;
 }
 
 label {
   font-weight: bold;
-  /* margin-bottom: 5px; */
 }
 
 input {
-  /* padding: 8px; */
-  /* margin-bottom: 15px; */
-  height: 20px;
+  height: 25px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  padding: 1px 2px;
+}
+
+label[for=name] {
+  grid-column-start: 1;
+}
+
+input #name {
+  grid-column-start: 2;
+}
+
+label[for=channel]{
+  grid-column-start: 1;
+}
+
+input #channel{
+  grid-column-start: 2;
+}
+
+label[for=dateFrom] {
+  grid-column-start: 1;
+  display:inline-block;
+  /* text-align: right; */
+}
+
+input #dateFrom {
+  grid-column-start: 2;
+}
+
+#data {
+  display:inline-block;
+}
+
+#from {
+  float: right;
+}
+
+label[for=dateTo] {
+  grid-column-start: 3;
+  text-align: right;
+}
+
+input #dateTo {
+  grid-column-start: 4;
+}
+
+label[for=checkbox] {
+  grid-column-start: 1;
+}
+
+input[type=checkbox] {
+  width: 20px;
+  grid-column-start: 2;
+  margin: auto;
 }
 
 button {
@@ -126,6 +140,8 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  grid-column-start: 1;
+
 }
 
 button:hover {
@@ -150,10 +166,16 @@ button:disabled, button:hover:disabled {
   /* align-content: center; */
   font-weight: bold;
   margin-left: 50px;
+  grid-column-start: 2;
+  grid-column: span 2;
+
 }
 
-.search {
-  display: grid;
-  align-items: center;
-  grid-template-columns: 200px 1fr;
+.spinner {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+
