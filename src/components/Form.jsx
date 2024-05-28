@@ -167,7 +167,7 @@ function Form({
           <input type="file" id="chooseFile" onChange={handleFileUpload} />
           
           <label htmlFor="chooseFile" className="custom-file-download" >
-            Обновить базу данных
+            Загрузить данные
           </label>
               
         </div>
