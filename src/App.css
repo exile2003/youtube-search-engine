@@ -133,7 +133,7 @@ input[type=checkbox] {
 }
 
 button {
-  max-width: 100px;
+  width: 100px;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -160,6 +160,11 @@ button:disabled, button:hover:disabled {
   background-color: rgba(0,0,0,.1);
   border: 1px solid rgba(0, 0, 0, .1);
   cursor: not-allowed;
+}
+
+.resetDate {
+  width: 110px;
+  grid-column-start: 6;
 }
 
 .amount {
