@@ -81,20 +81,12 @@ function Form({
           dateTo != dateToPrevious.current |
           unique != uniquePrevious.current
         ) {
-          /*
-          trace(
-            `updateIsLoading to true`,
-            event.timeStamp,
-            () => updateIsLoading(true);
-          );
-          */
-          
-
+         
           tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
           if(unique) {
-            const tempDB2 = removeDuplicates(tempDB);
-            setAmount(tempDB2.length);
-            updateItems(tempDB2);
+            const uniqueDB = removeDuplicates(tempDB);
+            setAmount(uniqueDB.length);
+            updateItems(uniqueDB);
           } else {
             setAmount(tempDB.length);
             updateItems(tempDB);
@@ -107,7 +99,6 @@ function Form({
           channelPrevious.current = channel;
           dateFromPrevious.current = dateFrom;
           dateToPrevious.current = dateTo;
-
           itemsPrevious.current = tempDB;
           uniquePrevious.current = unique;
 
@@ -133,13 +124,13 @@ function Form({
         const result = youtubeDB
             .filter(item => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
             .filter(item => item?.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
-            .filter(item => 
-              item.date&&dateFrom 
+            .filter(item =>
+                item.date&&dateFrom 
                 ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
                 : true
             )
             .filter(item => 
-              item.date&&dateTo 
+                item.date&&dateTo 
                 ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
                 : true
             );
@@ -155,8 +146,12 @@ function Form({
           }
         });
         
-        //return uniqueItems;
         return Object.values(uniqueItems);
+      }
+
+      const resetDate = () => {
+        setDateFrom('2017-01-01'); 
+        setDateTo(moment().format('YYYY-MM-DD'));
       }
 
     return (
@@ -183,16 +178,15 @@ function Form({
           {/* </div> */}
           {/* <div> */}
             <label  htmlFor="dateFrom">
-              {/* Дата:&nbsp;&nbsp;от&nbsp; */}
               <div id="data">Дата:</div>
               <div id="from">от</div>
             </label>
             <input type="date" value={dateFrom} id="dateFrom" onChange={(e) => setDateFrom(e.target.value)} />
             <label  htmlFor="dateTo">до</label>
             <input type="date" value={dateTo} id="dateTo" onChange={(e) => setDateTo(e.target.value)} />
+            <button className="resetDate" onClick={resetDate} >Сброс дат</button>
           {/* </div> */}
           {/* <div className="search"> */}
-          {/* <div></div> */}
             <label htmlFor="checkbox">Исключить повторения</label>
             <input type="checkbox" id="checkbox" checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
             <button type="submit">Искать</button>
