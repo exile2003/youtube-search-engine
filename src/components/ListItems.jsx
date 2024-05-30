@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useRef, useCallback } from 'react'
+import React from 'react'
 import { FixedSizeList } from "react-window";
 import moment from 'moment'
 
@@ -19,7 +19,6 @@ import moment from 'moment'
 function ListItems({ items }) {
 
   let dateFormat = '';
-  console.log(items[0]);
   if(items[0]?.date.split('')[0].charCodeAt() < 57) {
     moment.locale('ru');
     dateFormat = 'DD MMMM YYYY, HH:mm:ss';
