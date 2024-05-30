@@ -1,10 +1,15 @@
-import { useState, useEffect, useRef } from 'react'
-import moment from 'moment'
+import { useState, useEffect, useRef } from 'react';
+import moment from 'moment';
+import 'moment/dist/locale/ru.js';
 //import { unstable_trace as trace } from 'scheduler/tracing'
 //import { debounce, throttle } from 'lodash'
 
+
+
 let youtubeDB = [];
 let tempDB = [];
+
+console.log("locale", moment.locale());
 
 function Form({ 
       updateItems, 
@@ -73,6 +78,7 @@ function Form({
     const handleSubmit = (event) => {
         updateIsLoading(true);
         event.preventDefault();
+        moment.locale('ru');
  
         if(
           title != titlePrevious.current |
@@ -81,7 +87,7 @@ function Form({
           dateTo != dateToPrevious.current |
           unique != uniquePrevious.current
         ) {
-         
+          
           tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
           if(unique) {
             const uniqueDB = removeDuplicates(tempDB);
@@ -107,31 +113,44 @@ function Form({
 
         setTimeout(() => updateIsLoading(false), 0);
 
-        console.log('Название:', title);
-        console.log('Канал:', channel);
-        console.log('Дата:', dateFrom, dateTo);
+        //console.log('Название:', title);
+        //console.log('Канал:', channel);
+        //console.log('Дата:', dateFrom, dateTo);
         console.log("youtubeDB", youtubeDB);
         console.log("tempDB", tempDB);
         console.log("itemsPrevious", itemsPrevious.current);
         console.log("----------------------------------")
         console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
-        console.log('titlePrevious: ', titlePrevious);
-        console.log('channelPrevious: ', channelPrevious);
-        console.log('unique', unique);
+        console.log("dateTo", moment(dateTo, 'YYYY-MM-DD').unix())
+
+       // console.log('titlePrevious: ', titlePrevious);
+       // console.log('channelPrevious: ', channelPrevious);
+       // console.log('unique', unique);
+       console.log(amount);
     }
 
       const filterYoutubeDB = (youtubeDB, title, channel, dateFrom, dateTo) => {
+        
+        let dateFormat = '';
+        if(youtubeDB[0]?.date.split('')[0].charCodeAt() < 57) {
+          moment.locale('ru');
+          dateFormat = 'DD MMMM YYYY, HH:mm:ss';
+        } else {
+          moment.locale('en');
+          dateFormat = 'MMMM DD YYYY, HH:mm:ss';
+        }
+        
         const result = youtubeDB
             .filter(item => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
             .filter(item => item?.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
             .filter(item =>
-                item.date&&dateFrom 
-                ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
-                : true
+              item.date&&dateFrom 
+                ? moment(item?.date, dateFormat).unix() >= moment(dateFrom, 'YYYY-MM-DD').unix() 
+                : true  
             )
             .filter(item => 
                 item.date&&dateTo 
-                ? moment(item?.date, 'MMMM DD, YYYY, HH:mm:ss').unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
+                ? moment(item?.date, dateFormat).unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400 
                 : true
             );
         return result
