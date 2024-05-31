@@ -11,19 +11,10 @@ import './App.css'
 const MemoForm = memo(Form)
 const MemoListItems = memo(ListItems)
 
-function renderByAnyKey() {
-    const [, forceRender] = useState()
-
-    useEffect(() => {
-        window.addEventListener("keydown", forceRender);
-        return () => window.removeEventListener("keydown", forceRender);
-        }, [])
-}
-
 function App() {
 
-    //renderByAnyKey()
-    
+  useEffect(() => alert('загрузи БД'), [])
+  
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
   const [items, setItems] = useState([]);
@@ -67,22 +58,7 @@ function App() {
     //   updateItems={updateItems} updateIsLoading={updateIsLoading} updateTitle={updateTitle} updateChannel={updateChannel} title={title} channel={channel}
     // }
  
-    /*
-    const myProps = {
-        updateItems, 
-        updateIsLoading
-    }
-    */
-
-    useEffect(() => {
-      console.count("render App");
-    })
-/*
-     if (isLoading) return <>
-        <div className="spinner"><RingLoader /></div>
-       
-     </>
-*/
+   
   return ( 
     <>
     {isLoading && <div className="spinner"><RingLoader /></div>}

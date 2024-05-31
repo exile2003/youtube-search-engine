@@ -1,136 +1,115 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment/dist/locale/ru.js';
-//import { unstable_trace as trace } from 'scheduler/tracing'
-//import { debounce, throttle } from 'lodash'
-
-
 
 let youtubeDB = [];
 let tempDB = [];
-
-console.log("locale", moment.locale());
 
 function Form({ 
       updateItems, 
       updateIsLoading, 
      }) {
 
-    const [title, setTitle] = useState('');
-    const [channel, setChannel] = useState('');
-    const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
-    const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
-    const [unique, setUnique] = useState(false);
-    const [amount, setAmount] = useState(0);
+      const [title, setTitle] = useState('');
+      const [channel, setChannel] = useState('');
+      const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
+      const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
+      const [unique, setUnique] = useState(false);
+      const [itemsNumber, setItemsNumber] = useState(0);
+      const [fileID, setFileID] = useState(null)
 
-    const titlePrevious = useRef(null);
-    const channelPrevious = useRef(null);
-    const dateFromPrevious = useRef(null);
-    const dateToPrevious = useRef(null);
-    const itemsPrevious = useRef(null);
-    const uniquePrevious = useRef(null);
+      const titlePrevious = useRef(null);
+      const channelPrevious = useRef(null);
+      const dateFromPrevious = useRef(null);
+      const dateToPrevious = useRef(null);
+      const itemsPrevious = useRef(null);
+      const uniquePrevious = useRef(null);
+      const fileIDPrevious = useRef(null);
 
-    useEffect(() => console.count("render Form"))
+      const handleFileUpload = (event) => {
 
-    const handleFileUpload = (event) => {
+          const file = event.target.files[0];
 
-        const file = event.target.files[0];
+          updateItems([]);
+          setItemsNumber(0);
+          setFileID(() => Symbol())
 
-        try {
-          if(file) getFile(file);
-        } catch (error) {
-          console.error('Ошибка загрузки файла:', error);
-        }
-    }
 
-    const getFile = (file) => {
-    
-       updateIsLoading(true);
-
-        youtubeDB = [];
-
-        const reader = new FileReader();
-        reader.readAsText(file);
-      
-        reader.onload = (event) => {
-          const fileContent = event.target.result;
-
-          // Parsing the content of the input file and assign result to domTree variable
-          const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
-      
-          // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
-          const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
-
-          // Form the youtubeDB array with youtube videos data
-          allSelectors.forEach(item => item.children[0] && youtubeDB.push({
-            title: item.children[0]?.textContent,
-            titleLink: item.children[0]?.href,
-            channel: item.children[2]?.textContent,
-            channelLink: item.children[2]?.href,
-            date: item.lastChild?.textContent
-          }));
-          
-         // console.log("Yes!", youtubeDB);
-          updateIsLoading(false)
-        }    
-    }
-
-    const handleSubmit = (event) => {
-        updateIsLoading(true);
-        event.preventDefault();
-        moment.locale('ru');
- 
-        if(
-          title != titlePrevious.current |
-          channel != channelPrevious.current |
-          dateFrom != dateFromPrevious.current |
-          dateTo != dateToPrevious.current |
-          unique != uniquePrevious.current
-        ) {
-          
-          tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
-          if(unique) {
-            const uniqueDB = removeDuplicates(tempDB);
-            setAmount(uniqueDB.length);
-            updateItems(uniqueDB);
-          } else {
-            setAmount(tempDB.length);
-            updateItems(tempDB);
+          try {
+            if(file) getFile(file);
+          } catch (error) {
+            console.error('Ошибка загрузки файла:', error);
           }
-          
-          
-          console.log("items == itemsPrevious", tempDB == itemsPrevious.current)
+      }
 
-          titlePrevious.current = title;
-          channelPrevious.current = channel;
-          dateFromPrevious.current = dateFrom;
-          dateToPrevious.current = dateTo;
-          itemsPrevious.current = tempDB;
-          uniquePrevious.current = unique;
+      const getFile = (file) => {
+      
+        updateIsLoading(true);
 
-          
-        };
+          youtubeDB = [];
 
-        setTimeout(() => updateIsLoading(false), 0);
+          const reader = new FileReader();
+          reader.readAsText(file);
+        
+          reader.onload = (event) => {
+            const fileContent = event.target.result;
 
-        //console.log('Название:', title);
-        //console.log('Канал:', channel);
-        //console.log('Дата:', dateFrom, dateTo);
-        console.log("youtubeDB", youtubeDB);
-        console.log("tempDB", tempDB);
-        console.log("itemsPrevious", itemsPrevious.current);
-        console.log("----------------------------------")
-        console.log("dateFrom", moment(dateFrom, 'YYYY-MM-DD').unix())
-        console.log("dateTo", moment(dateTo, 'YYYY-MM-DD').unix())
+            // Parsing the content of the input file and assign result to domTree variable
+            const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
+        
+            // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
+            const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
 
-       // console.log('titlePrevious: ', titlePrevious);
-       // console.log('channelPrevious: ', channelPrevious);
-       // console.log('unique', unique);
-       console.log(amount);
-    }
+            // Form the youtubeDB array with youtube videos data
+            allSelectors.forEach(item => item.children[0] && youtubeDB.push({
+              title: item.children[0]?.textContent,
+              titleLink: item.children[0]?.href,
+              channel: item.children[2]?.textContent,
+              channelLink: item.children[2]?.href,
+              date: item.lastChild?.textContent
+            }));
+            
+            updateIsLoading(false)
+          }    
+      }
+
+      const handleSubmit = (event) => {
+          updateIsLoading(true);
+          event.preventDefault();
+  
+          if(
+            fileID != fileIDPrevious.current |
+            title != titlePrevious.current |
+            channel != channelPrevious.current |
+            dateFrom != dateFromPrevious.current |
+            dateTo != dateToPrevious.current |
+            unique != uniquePrevious.current
+          ) {
+            
+            tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+            if(unique) {
+              const uniqueDB = removeDuplicates(tempDB);
+              setItemsNumber(uniqueDB.length);
+              updateItems(uniqueDB);
+            } else {
+              setItemsNumber(tempDB.length);
+              updateItems(tempDB);
+            }
+            
+            titlePrevious.current = title;
+            channelPrevious.current = channel;
+            dateFromPrevious.current = dateFrom;
+            dateToPrevious.current = dateTo;
+            itemsPrevious.current = tempDB;
+            uniquePrevious.current = unique;
+            fileIDPrevious.current = fileID;           
+          };
+
+          setTimeout(() => updateIsLoading(false), 0);
+      }
 
       const filterYoutubeDB = (youtubeDB, title, channel, dateFrom, dateTo) => {
-        
+
         let dateFormat = '';
         if(youtubeDB[0]?.date.split('')[0].charCodeAt() < 57) {
           moment.locale('ru');
@@ -179,40 +158,38 @@ function Form({
           <h2>Youtube videos</h2>
          
           <input type="file" id="chooseFile" onChange={handleFileUpload} />
-          
           <label htmlFor="chooseFile" className="custom-file-download" >
             Загрузить данные
-          </label>
-              
+          </label>            
         </div>
        
         <form onSubmit={handleSubmit}>
-          {/* <div className="title" > */}
+
             <label htmlFor="name">Название видео:&nbsp;&nbsp;</label>
             <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
-          {/* </div> */}
-          {/* <div className="channel" > */}
+         
             <label htmlFor="channel">Название канала:&nbsp;&nbsp;</label>
             <input type="text" value={channel} id="channel" onChange={(e) => setChannel(e.target.value)} />
-          {/* </div> */}
-          {/* <div> */}
+       
             <label  htmlFor="dateFrom">
               <div id="data">Дата:</div>
               <div id="from">от</div>
             </label>
             <input type="date" value={dateFrom} id="dateFrom" onChange={(e) => setDateFrom(e.target.value)} />
+            
             <label  htmlFor="dateTo">до</label>
             <input type="date" value={dateTo} id="dateTo" onChange={(e) => setDateTo(e.target.value)} />
             <button className="resetDate" onClick={resetDate} >Сброс дат</button>
-          {/* </div> */}
-          {/* <div className="search"> */}
+        
             <label htmlFor="checkbox">Исключить повторения</label>
             <input type="checkbox" id="checkbox" checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
+            
             <button type="submit">Искать</button>
-            <div className="amount">
-            { !!amount ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${amount}`}</div> : ''}
+            
+            <div className="itemsNumber">
+            { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${itemsNumber}`}</div> : ''}
             </div>
-          {/* </div> */}       
+
         </form>
       </div>
     )

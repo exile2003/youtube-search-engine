@@ -167,7 +167,7 @@ button:disabled, button:hover:disabled {
   grid-column-start: 6;
 }
 
-.amount {
+.itemsNumber {
   /* align-content: center; */
   font-weight: bold;
   margin-left: 50px;
