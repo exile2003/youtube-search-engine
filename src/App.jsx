@@ -15,7 +15,6 @@ const MemoListItems = memo(ListItems)
 function App() {
 
   
-  
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
   const [items, setItems] = useState([]);
