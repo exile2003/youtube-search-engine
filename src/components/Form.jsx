@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment/dist/locale/ru.js';
+import saveDB from '../services/saveDB'
 
 let youtubeDB = [];
 let tempDB = [];
@@ -69,6 +70,7 @@ function Form({
               date: item.lastChild?.textContent
             }));
             
+            saveDB(youtubeDB, 'videos', 'youtubeDB');
             updateIsLoading(false)
           }    
       }

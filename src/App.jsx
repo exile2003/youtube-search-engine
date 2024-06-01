@@ -4,6 +4,7 @@ import moment from 'moment'
 import { debounce, throttle } from 'lodash'
 import ListItems from './components/ListItems'
 import Form from './components/Form'
+import loadDB from './services/loadDB'
 
 
 import './App.css'
@@ -13,13 +14,15 @@ const MemoListItems = memo(ListItems)
 
 function App() {
 
-  useEffect(() => alert('загрузи БД'), [])
+  
   
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [db, setDB] = useState(loadDB('youtubeDB', 'videos', 'youtubeDB'));
 
+  useEffect(() => (!db?.length)&&alert('загрузи БД'), [])
   //const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
  //const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
