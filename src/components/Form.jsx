@@ -70,7 +70,7 @@ function Form({
               date: item.lastChild?.textContent
             }));
             
-            saveDB(youtubeDB, 'videos', 'youtubeDB');
+            saveDB(youtubeDB, 'videos', 'youtubeDB'); 
             updateIsLoading(false)
           }    
       }
