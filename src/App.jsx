@@ -19,9 +19,14 @@ function App() {
   //const [channel, setChannel] = useState('');
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [db, setDB] = useState(loadDB('youtubeDB', 'videos', 'youtubeDB'));
+  const [db, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB'));
+  //const [db, setDB] = useState([]);
 
-  useEffect(() => (!db?.length)&&alert('загрузи БД'), [])
+
+  useEffect(() => {
+    (!db)&&alert('БД отсутствует');
+    (!db?.length)&&alert('БД пустая');
+  }, [])
   //const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
  //const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
