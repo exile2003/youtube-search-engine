@@ -6,6 +6,8 @@ import ListItems from './components/ListItems'
 import Form from './components/Form'
 import loadDB from './services/loadDB'
 
+import returnSmth from './services/returnSmth'
+
 
 import './App.css'
 
@@ -14,19 +16,40 @@ const MemoListItems = memo(ListItems)
 
 function App() {
 
+  const updateDB = useCallback(
+    (value) => {
+     setDB(value);
+     console.log("change DB", value);
+     (value == null || value == undefined)&&alert('БД отсутствует');
+    (!value?.length)&&alert('БД пустая');
+  }, [])
   
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [db, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB'));
-  //const [db, setDB] = useState([]);
+  const [db, setDB] = useState(() => loadDB('videos', 'youtubeDB3', 'keyYoutubeDB', updateDB));
+  /*
+  const [db, setDB] = useState([{"channel":"The Companies Expert",
+    "channelLink":"https://www.youtube.com/channel/UCHfYqxApaB6_DXCBuFSYG5w",
+    "date":"24 мая 2024 г., 14:30:53 EET",
+    "title":"What is your Weakness? | Best Answer (from former CEO)",
+    "titleLink": "https://www.youtube.com/watch?v=yzWo8EXsfTs"}]);
+  */
 
+    
 
   useEffect(() => {
-    (!db)&&alert('БД отсутствует');
-    (!db?.length)&&alert('БД пустая');
-  }, [])
+    //let res = returnSmth();
+    //console.log("res?",res)
+    //loadDB('videos', 'youtubeDB3', 'keyYoutubeDB', updateDB); 
+    //console.log("res?",res);
+    
+    console.log("db?", db);
+    //setDB(res);
+    //(!db)&&alert('БД отсутствует');
+    //(!db?.length)&&alert('БД пустая');
+  }, [db])
   //const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
  //const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
 
@@ -51,6 +74,8 @@ function App() {
           console.log("change isLoading", value)
       }, [])
 
+      
+
      //   const updateIsLoading = setIsLoading;
 
     //const memoItems = useMemo(() => items, [items])
@@ -70,7 +95,7 @@ function App() {
     <>
     {isLoading && <div className="spinner"><RingLoader /></div>}
       <div style = {isLoading ? {display: 'none'} : {}}>
-        <MemoForm updateItems={updateItems} updateIsLoading={updateIsLoading} />
+        <MemoForm updateItems={updateItems} updateIsLoading={updateIsLoading} db = {db} />
         <MemoListItems items={items} />
       </div>
     </>       
