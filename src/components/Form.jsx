@@ -8,8 +8,13 @@ let tempDB = [];
 
 function Form({ 
       updateItems, 
-      updateIsLoading, 
+      updateIsLoading,
+      db 
      }) {
+      console.log("db-form", db);
+
+    //  if (db!= null || db != undefined) youtubeDB = db;
+    youtubeDB = db;
 
       const [title, setTitle] = useState('');
       const [channel, setChannel] = useState('');
@@ -45,7 +50,7 @@ function Form({
 
       const getFile = (file) => {
       
-        updateIsLoading(true);
+          updateIsLoading(true);
 
           youtubeDB = [];
 
@@ -70,7 +75,7 @@ function Form({
               date: item.lastChild?.textContent
             }));
             
-            saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
+            saveDB(youtubeDB, 'videos', 'youtubeDB3', 'keyYoutubeDB');
             updateIsLoading(false)
           }    
       }
@@ -89,6 +94,7 @@ function Form({
           ) {
             
             tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+            
             if(unique) {
               const uniqueDB = removeDuplicates(tempDB);
               setItemsNumber(uniqueDB.length);
