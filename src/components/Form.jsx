@@ -14,7 +14,6 @@ function Form({
       console.log("Form. db", db);
 
     if (db!= null || db != undefined) youtubeDB = db;
-    //youtubeDB = db;
 
       const [title, setTitle] = useState('');
       const [channel, setChannel] = useState('');
@@ -54,7 +53,6 @@ function Form({
           youtubeDB = [];
           console.log("Form. getFile. youtubeDB after", youtubeDB)
 
-
           const reader = new FileReader();
           reader.readAsText(file);
         
@@ -77,7 +75,7 @@ function Form({
             }));
             
             console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
-            saveDB(youtubeDB, 'videos', 'youtubeDB3', 'keyYoutubeDB');
+            saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
             updateIsLoading(false)
           }    
       }
@@ -200,7 +198,6 @@ function Form({
             <div className="itemsNumber">
             { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${itemsNumber}`}</div> : ''}
             </div>
-
         </form>
       </div>
     )
