@@ -2,20 +2,6 @@ import React from 'react'
 import { FixedSizeList } from "react-window";
 import moment from 'moment'
 
-// function ListItem({ item }) {
-//   console.count("render ListItem ");
-//    return (
-//         <li>
-//           <a href = {item.titleLink}>{item.title}</a> - 
-//           <a href = {item.channelLink}>{item.channel}</a> - 
-//           {moment(item.date, 'DD MMMM YYYY, HH:mm:ss').format('MMMM-DD-YYYY HH:mm:ss')}     
-//         </li>
-//     )
-        
-// }
-
-// const MemoListItem = memo(ListItem)
-
 function ListItems({ items }) {
 
   let dateFormat = '';
@@ -56,7 +42,6 @@ function ListItems({ items }) {
             </li>
         
           )}
-   
             
           </FixedSizeList>
     )
