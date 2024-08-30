@@ -5,8 +5,7 @@ import { debounce, throttle } from 'lodash'
 import ListItems from './components/ListItems'
 import Form from './components/Form'
 import loadDB from './services/loadDB'
-
-import returnSmth from './services/returnSmth'
+import loadSmth from './services/loadSmth'
 
 
 import './App.css'
@@ -16,12 +15,14 @@ const MemoListItems = memo(ListItems)
 
 function App() {
 
+  console.log("App.");
+
   const updateDB = useCallback(
     (value) => {
-     setDB(value);
-     console.log("change DB", value);
-     (value == null || value == undefined)&&alert('БД отсутствует');
-    (!value?.length)&&alert('БД пустая');
+      setDB(value);
+      console.log("updateDB -> setDB", value);
+      (value == null || value == undefined)&&alert('БД отсутствует');
+      (!value?.length)&&alert('БД пустая');
   }, [])
 
   //const [title, setTitle] = useState('');
@@ -29,6 +30,8 @@ function App() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [db, setDB] = useState(() => loadDB('videos', 'youtubeDB3', 'keyYoutubeDB', updateDB));
+  //const [db, setDB] = useState(() => loadSmth(5));
+
   /*
   const [db, setDB] = useState([{"channel":"The Companies Expert",
     "channelLink":"https://www.youtube.com/channel/UCHfYqxApaB6_DXCBuFSYG5w",
@@ -44,7 +47,7 @@ function App() {
     //loadDB('videos', 'youtubeDB3', 'keyYoutubeDB', updateDB); 
     //console.log("res?",res);
     
-    console.log("db?", db);
+    console.log("useEffect. App. db.", db);
     //setDB(res);
     //(!db)&&alert('БД отсутствует');
     //(!db?.length)&&alert('БД пустая');
@@ -62,7 +65,7 @@ function App() {
      const updateItems = useCallback(
          (value) => {
           setItems(value);
-          console.log("change items")
+          console.log("App. updateItems -> setItems")
       }, [])
 
     //    const updateItems = setItems;
@@ -70,7 +73,7 @@ function App() {
      const updateIsLoading = useCallback(
          (value) => {
           setIsLoading(value);
-          console.log("change isLoading", value)
+          console.log("App. updateIsLoading -> setIsLoading", value)
       }, [])
 
       
@@ -92,8 +95,9 @@ function App() {
    
   return ( 
     <>
-    {isLoading && <div className="spinner"><RingLoader /></div>}
-      <div style = {isLoading ? {display: 'none'} : {}}>
+    {/* {isLoading && <div className="spinner"><RingLoader /></div>} */}
+      {/* <div style = {isLoading ? {display: 'none'} : {}}> */}
+      <div>
         <MemoForm updateItems={updateItems} updateIsLoading={updateIsLoading} db = {db} />
         <MemoListItems items={items} />
       </div>

@@ -11,7 +11,7 @@ function Form({
       updateIsLoading,
       db 
      }) {
-      console.log("db-form", db);
+      console.log("Form. db", db);
 
     if (db!= null || db != undefined) youtubeDB = db;
     //youtubeDB = db;
@@ -50,9 +50,9 @@ function Form({
       const getFile = (file) => {
       
           updateIsLoading(true);
-          console.log("youtubeDB before", youtubeDB)
+          console.log("Form. getFile. youtubeDB before", youtubeDB)
           youtubeDB = [];
-          console.log("youtubeDB after", youtubeDB)
+          console.log("Form. getFile. youtubeDB after", youtubeDB)
 
 
           const reader = new FileReader();
@@ -60,9 +60,9 @@ function Form({
         
           reader.onload = (event) => {
             const fileContent = event.target.result;
-            console.log("reader.onload before", youtubeDB.length);
+            console.log("Form. getFile. reader.onload before", youtubeDB.length);
             youtubeDB = [];
-            console.log("reader.onload after", youtubeDB.length);
+            console.log("Form. getFile. reader.onload after", youtubeDB.length);
             // Parsing the content of the input file and assign result to domTree variable
             const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
         
@@ -78,7 +78,7 @@ function Form({
               date: item.lastChild?.textContent
             }));
             
-            console.log("youtubeDB.length", youtubeDB.length);
+            console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
             saveDB(youtubeDB, 'videos', 'youtubeDB3', 'keyYoutubeDB');
             updateIsLoading(false)
           }    
