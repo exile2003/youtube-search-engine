@@ -60,9 +60,7 @@ function Form({
         
           reader.onload = (event) => {
             const fileContent = event.target.result;
-            console.log("Form. getFile. reader.onload before", youtubeDB.length);
             youtubeDB = [];
-            console.log("Form. getFile. reader.onload after", youtubeDB.length);
             // Parsing the content of the input file and assign result to domTree variable
             const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
         
