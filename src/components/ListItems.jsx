@@ -33,14 +33,12 @@ function ListItems({ items }) {
 
           {({data, index, style}) => (
           
-         
             <li style={style} >
               <a href = {data[index].titleLink}>{data[index].title}</a> - &nbsp;
               <a href = {data[index].channelLink}>{data[index].channel}</a> - &nbsp;
               {moment(data[index].date, dateFormat).format('MMMM-DD-YYYY HH:mm:ss')}  
               
-            </li>
-        
+            </li>        
           )}
             
           </FixedSizeList>
