@@ -23,7 +23,7 @@ function App() {
      (value == null || value == undefined)&&alert('БД отсутствует');
     (!value?.length)&&alert('БД пустая');
   }, [])
-  
+
   //const [title, setTitle] = useState('');
   //const [channel, setChannel] = useState('');
   const [items, setItems] = useState([]);
@@ -36,7 +36,6 @@ function App() {
     "title":"What is your Weakness? | Best Answer (from former CEO)",
     "titleLink": "https://www.youtube.com/watch?v=yzWo8EXsfTs"}]);
   */
-
     
 
   useEffect(() => {
