@@ -13,8 +13,8 @@ function Form({
      }) {
       console.log("db-form", db);
 
-    //  if (db!= null || db != undefined) youtubeDB = db;
-    youtubeDB = db;
+    if (db!= null || db != undefined) youtubeDB = db;
+    //youtubeDB = db;
 
       const [title, setTitle] = useState('');
       const [channel, setChannel] = useState('');
@@ -40,7 +40,6 @@ function Form({
           setItemsNumber(0);
           setFileID(() => Symbol())
 
-
           try {
             if(file) getFile(file);
           } catch (error) {
@@ -51,15 +50,19 @@ function Form({
       const getFile = (file) => {
       
           updateIsLoading(true);
-
+          console.log("youtubeDB before", youtubeDB)
           youtubeDB = [];
+          console.log("youtubeDB after", youtubeDB)
+
 
           const reader = new FileReader();
           reader.readAsText(file);
         
           reader.onload = (event) => {
             const fileContent = event.target.result;
-
+            console.log("reader.onload before", youtubeDB.length);
+            youtubeDB = [];
+            console.log("reader.onload after", youtubeDB.length);
             // Parsing the content of the input file and assign result to domTree variable
             const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
         
@@ -75,6 +78,7 @@ function Form({
               date: item.lastChild?.textContent
             }));
             
+            console.log("youtubeDB.length", youtubeDB.length);
             saveDB(youtubeDB, 'videos', 'youtubeDB3', 'keyYoutubeDB');
             updateIsLoading(false)
           }    
@@ -94,7 +98,7 @@ function Form({
           ) {
             
             tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
-            
+
             if(unique) {
               const uniqueDB = removeDuplicates(tempDB);
               setItemsNumber(uniqueDB.length);
@@ -155,7 +159,8 @@ function Form({
         return Object.values(uniqueItems);
       }
 
-      const resetDate = () => {
+      const resetDate = (event) => {
+        event.preventDefault();
         setDateFrom('2017-01-01'); 
         setDateTo(moment().format('YYYY-MM-DD'));
       }
