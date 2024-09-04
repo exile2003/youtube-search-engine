@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment/dist/locale/ru.js';
 import saveDB from '../services/saveDB'
+import styles from '../App.module.css';
 
 let youtubeDB = [];
 let tempDB = [];
@@ -162,8 +163,8 @@ function Form({
       }
 
     return (
-      <div className="container">
-        <div className="header">
+      <div className={styles.container}>
+        <div className={styles.header}>
           <h2>Youtube videos</h2>
          
           <input type="file" id="chooseFile" onChange={handleFileUpload} />
@@ -172,7 +173,7 @@ function Form({
           </label>            
         </div>
        
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
 
             <label htmlFor="name">Название видео:&nbsp;&nbsp;</label>
             <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
@@ -188,14 +189,14 @@ function Form({
             
             <label  htmlFor="dateTo">до</label>
             <input type="date" value={dateTo} id="dateTo" onChange={(e) => setDateTo(e.target.value)} />
-            <button className="resetDate" onClick={resetDate} >Сброс дат</button>
+            <button className={styles.resetDate} onClick={resetDate} >Сброс дат</button>
         
             <label htmlFor="checkbox">Исключить повторения</label>
             <input type="checkbox" id="checkbox" checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
             
             <button type="submit">Искать</button>
             
-            <div className="itemsNumber">
+            <div className={styles.itemsNumber}>
             { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${itemsNumber}`}</div> : ''}
             </div>
         </form>
