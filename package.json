@@ -13,6 +13,8 @@
     "predeploy": "npm run build"
   },
   "dependencies": {
+    "@types/materialize-css": "^1.0.14",
+    "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

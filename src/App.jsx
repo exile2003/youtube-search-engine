@@ -5,7 +5,12 @@ import { debounce, throttle } from 'lodash'
 import ListItems from './components/ListItems'
 import Form from './components/Form'
 import loadDB from './services/loadDB'
+//import styles from './App.module.css';
 import './App.css'
+
+//import 'materialize-css'
+import { Modal } from './components/Modal';
+
 
 const MemoForm = memo(Form)
 const MemoListItems = memo(ListItems)
@@ -48,6 +53,7 @@ function App() {
       <div style = {isLoading ? {display: 'none'} : {}}>
         <MemoForm updateItems={updateItems} updateIsLoading={updateIsLoading} db = {db} />
         <MemoListItems items={items} />
+        <Modal/>
       </div>
     </>       
   )
