@@ -5,7 +5,7 @@ export let openModalWindow;
 
 function ModalWindow() {
   const [opened, { open, close }] = useDisclosure(false);
-  openModalWindow = () => open()
+  openModalWindow = open;
 
   return (
     <>
