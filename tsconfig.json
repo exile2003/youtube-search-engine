@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "Recycle_bin/Form.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
