@@ -2,8 +2,8 @@ import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment/dist/locale/ru.js';
 import saveDB from '../services/saveDB'
-import styles from '../App-3.module.scss';
-//import "../App.css";
+//import styles from '../App-2.module.scss';
+import "../App.css"
 
 let youtubeDB = [];
 let tempDB = [];
@@ -164,40 +164,40 @@ function Form({
       }
 
     return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h2 className={styles.h2}>Youtube videos</h2>
+      <div className="container">
+        <div className="header">
+          <h2 className="h2">Youtube videos</h2>
          
-          <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileUpload} />
-          <label htmlFor="chooseFile" className={styles.custom_file_download} >
+          <input type="file" id="chooseFile" className="chooseFile" onChange={handleFileUpload} />
+          <label htmlFor="chooseFile" className="custom_file_download" >
             Загрузить данные
           </label>            
         </div>
        
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit} className="form">
 
-            <label htmlFor="name" className={styles.name} >Название видео:&nbsp;&nbsp;</label>
-            <input type="text" value={title} id={styles.name} onChange={(e) => setTitle(e.target.value)} />
+            <label htmlFor="name">Название видео:&nbsp;&nbsp;</label>
+            <input type="text" value={title} id="name" onChange={(e) => setTitle(e.target.value)} />
          
-            <label htmlFor="channel" className={styles.channel} >Название канала:&nbsp;&nbsp;</label>
-            <input type="text" value={channel} id={styles.channel} onChange={(e) => setChannel(e.target.value)} />
+            <label htmlFor="channel" className="channel" >Название канала:&nbsp;&nbsp;</label>
+            <input type="text" value={channel} id="channel" onChange={(e) => setChannel(e.target.value)} />
        
-            <label  htmlFor="dateFrom" className={styles.dateFrom}>
-              <div id={styles.data}>Дата:</div>
-              <div id={styles.from}>от</div>
+            <label  htmlFor="dateFrom" className="dateFrom">
+              <div id="data">Дата:</div>
+              <div id="from">от</div>
             </label>
-            <input type="date" value={dateFrom} id={styles.dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+            <input type="date" value={dateFrom} id="dateFrom" onChange={(e) => setDateFrom(e.target.value)} />
             
-            <label  htmlFor="dateTo" className={styles.dateTo}>до</label>
-            <input type="date" value={dateTo} id={styles.dateTo} onChange={(e) => setDateTo(e.target.value)} />
-            <button className={styles.resetDate} onClick={resetDate} >Сброс дат</button>
+            <label  htmlFor="dateTo">до</label>
+            <input type="date" value={dateTo} id="dateTo" onChange={(e) => setDateTo(e.target.value)} />
+            <button className="resetDate" onClick={resetDate} >Сброс дат</button>
         
             <label htmlFor="checkbox">Исключить повторения</label>
-            <input type="checkbox" id="checkbox" className={styles.checkbox} checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
-
+            <input type="checkbox" id="checkbox" checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
+            
             <button type="submit">Искать</button>
             
-            <div className={styles.itemsNumber}>
+            <div className="itemsNumber">
             { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${itemsNumber}`}</div> : ''}
             </div>
         </form>
