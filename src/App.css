@@ -1,5 +1,5 @@
 
-/* @import "~materialize-css/dist/css/materialize.min.css"; */
+/* @import "materialize-css/dist/css/materialize.min.css"; */
 
 body {
   /* display: grid; */
@@ -33,7 +33,7 @@ body {
   /* z-index: 1; */
 }
 
-.custom-file-download {
+.custom_file_download {
   display: inline-block;
   text-align: center;
   max-width: 190px;
@@ -48,15 +48,15 @@ body {
   font-weight: normal;
 }
 
-.custom-file-download:hover {
+.custom_file_download:hover {
   background-color: #0056b3;
 }
 
-.custom-file-download:active {
+.custom_file_download:active {
   background-color: #0056b3;
 }
 
-.custom-file-download[disabled] {
+.custom_file_download[disabled] {
   background-color: rgba(0,0,0,.1);
   border: 1px solid rgba(0, 0, 0, .1);
   cursor: not-allowed;
@@ -179,13 +179,10 @@ button:disabled, button:hover:disabled {
 }
 
 .spinner {
+  /* background-image: linear-gradient(90deg, #ddf4ff 30%, #dafbe1); */
   margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.modal {
-
 }
