@@ -4,8 +4,7 @@ import { RingLoader } from 'react-spinners'
 import ListItems from './components/ListItems'
 import Form from './components/Form'
 import loadDB from './services/loadDB'
-import styles from './App-3.module.scss';
-//import "./App.css"
+import styles from './App.module.scss';
 
 const MemoForm = memo(Form)
 const MemoListItems = memo(ListItems)

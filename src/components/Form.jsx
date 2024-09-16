@@ -2,8 +2,7 @@ import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment/dist/locale/ru.js';
 import saveDB from '../services/saveDB'
-import styles from '../App-3.module.scss';
-//import "../App.css";
+import styles from '../App.module.scss';
 
 let youtubeDB = [];
 let tempDB = [];
