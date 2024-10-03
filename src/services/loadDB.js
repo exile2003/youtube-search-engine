@@ -25,7 +25,7 @@ function loadDB(objectStore, databaseName, key, callback) {
             let request = store.get(key);
             request.onsuccess = function() {
                 console.log("request.onsuccess")
-                console.log("App. LoadDB. request.result", request.result)
+                console.log("LoadDB. request.result", request.result)
                 if(!!request.result) {
                     callback(request.result);
                 } else {  

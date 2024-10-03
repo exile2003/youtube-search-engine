@@ -3,6 +3,8 @@ import moment from 'moment';
 import 'moment/dist/locale/ru.js';
 import saveDB from '../services/saveDB'
 import styles from '../App.module.scss';
+import { openModalWindow } from './Modal'
+
 
 let youtubeDB = [];
 let tempDB = [];
@@ -10,11 +12,13 @@ let tempDB = [];
 function Form({ 
       updateItems, 
       updateIsLoading,
-      db 
+      updateDB,
+      dataBase 
      }) {
-      console.log("Form. db", db);
+      console.log("Form. dataBase", dataBase?.length);
 
-    if (db!= null || db != undefined) youtubeDB = db;
+    if (dataBase!= null || dataBase != undefined) youtubeDB = dataBase;
+
 
       const [title, setTitle] = useState('');
       const [channel, setChannel] = useState('');
@@ -32,7 +36,7 @@ function Form({
       const uniquePrevious = useRef(null);
       const fileIDPrevious = useRef(null);
 
-      const handleFileUpload = (event) => {
+      const handleFileDownload = (event) => {
 
           const file = event.target.files[0];
 
@@ -77,44 +81,51 @@ function Form({
             
             console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
             saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
+            updateDB(youtubeDB);
             updateIsLoading(false)
           }    
       }
 
       const handleSubmit = (event) => {
-          updateIsLoading(true);
           event.preventDefault();
-  
-          if(
-            fileID != fileIDPrevious.current |
-            title != titlePrevious.current |
-            channel != channelPrevious.current |
-            dateFrom != dateFromPrevious.current |
-            dateTo != dateToPrevious.current |
-            unique != uniquePrevious.current
-          ) {
-            
-            tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+          updateIsLoading(true);
 
-            if(unique) {
-              const uniqueDB = removeDuplicates(tempDB);
-              setItemsNumber(uniqueDB.length);
-              updateItems(uniqueDB);
-            } else {
-              setItemsNumber(tempDB.length);
-              updateItems(tempDB);
-            }
+          setTimeout(() => {
+            if(
+              fileID != fileIDPrevious.current |
+              title != titlePrevious.current |
+              channel != channelPrevious.current |
+              dateFrom != dateFromPrevious.current |
+              dateTo != dateToPrevious.current |
+              unique != uniquePrevious.current
+            ) {
+              tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+    
+              if(unique) {
+                const uniqueDB = removeDuplicates(tempDB);
+                setItemsNumber(uniqueDB.length);
+                updateItems(uniqueDB);
+              } else {
+                setItemsNumber(tempDB.length);
+                updateItems(tempDB);
+                console.log("The last operation")
+              }
+              
+              titlePrevious.current = title;
+              channelPrevious.current = channel;
+              dateFromPrevious.current = dateFrom;
+              dateToPrevious.current = dateTo;
+              itemsPrevious.current = tempDB;
+              uniquePrevious.current = unique;
+              fileIDPrevious.current = fileID;           
+            };
+            //setTimeout(() => updateIsLoading(false), 0)       
+            updateIsLoading(false)
             
-            titlePrevious.current = title;
-            channelPrevious.current = channel;
-            dateFromPrevious.current = dateFrom;
-            dateToPrevious.current = dateTo;
-            itemsPrevious.current = tempDB;
-            uniquePrevious.current = unique;
-            fileIDPrevious.current = fileID;           
-          };
-
-          setTimeout(() => updateIsLoading(false), 0);
+          }, 0)
+          
+          if(dataBase == undefined) openModalWindow();
+        
       }
 
       const filterYoutubeDB = (youtubeDB, title, channel, dateFrom, dateTo) => {
@@ -167,7 +178,7 @@ function Form({
         <div className={styles.header}>
           <h2 className={styles.h2}>Youtube videos</h2>
          
-          <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileUpload} />
+          <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileDownload} />
           <label htmlFor="chooseFile" className={styles.custom_file_download} >
             Загрузить данные
           </label>            
@@ -194,7 +205,7 @@ function Form({
             <label htmlFor="checkbox">Исключить повторения</label>
             <input type="checkbox" id="checkbox" className={styles.checkbox} checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
 
-            <button type="submit">Искать</button>
+            <button type="submit">Поиск</button>
             
             <div className={styles.itemsNumber}>
             { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{`Количество найденных видео: ${itemsNumber}`}</div> : ''}
