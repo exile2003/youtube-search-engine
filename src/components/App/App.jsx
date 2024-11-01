@@ -1,22 +1,18 @@
 import { useState, memo, useEffect, useCallback } from 'react'
 import { flushSync } from 'react-dom';
 import { RingLoader } from 'react-spinners'
+import { useTranslation } from 'react-i18next';
 
 import ListItems from '../Listitems/ListItems'
 import Form from '../Form/Form'
 import loadDB from '../../services/loadDB'
+
 import styles from './App.module.scss';
-
-import { useTranslation } from 'react-i18next';
-
-//import classNames from 'classnames';
 
 const MemoForm = memo(Form)
 const MemoListItems = memo(ListItems)
 
 function App() {
-
-  console.log("App.");
 
   const { i18n } = useTranslation();
 
@@ -30,7 +26,6 @@ function App() {
     lang_links.forEach(item => item.textContent.trim() === lng && item.classList.add(styles.lang_link_active));
   }
 
-
   const handleChangeLanguage = (e) => {
     e.preventDefault();
     changeLanguage(e.target.innerHTML);
@@ -41,14 +36,11 @@ function App() {
   const updateDB = useCallback(
     (value) => {
       setDB(value);
-      console.log("updateDB -> setDB", value);
   }, [])
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', updateDB));
-
-  console.log("isLoading", isLoading);
 
   useEffect(() => {
     const selectedLanguage = localStorage.getItem('selectedLanguage');
@@ -63,14 +55,10 @@ function App() {
 
   const updateItems = useCallback(
       (value) => {
-        //if (value.length == 0) alert("! БД нет")
-        console.log("App. updateItems -> setItems", value)
         flushSync(() => setItems(value));
-        //setItems(value);      
   }, [])
 
   const updateIsLoading = (value) => {
-    console.log("App. updateIsLoading -> setIsLoading", value)
     flushSync(() => setIsLoading(value));
   }
     
