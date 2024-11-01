@@ -18,29 +18,23 @@ function App() {
 
   console.log("App.");
 
-
-
   const { i18n } = useTranslation();
-
-  //const lang_link = classNames(styles.lang_link);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
-  const indicateChangedLanguage = (lng) => {
-    const elementEnLang = Array.from(document.querySelectorAll(`.${styles.lang_link}`))
-    .find(el => el.textContent.trim() === lng);
-    elementEnLang.classList.add(styles.lang_link_active);
+  const indicateChoosedLanguage = (lng) => {
+    const lang_links = document.querySelectorAll(`.${styles.lang_link}`);
+    lang_links.forEach(item => item.classList.remove(styles.lang_link_active));
+    lang_links.forEach(item => item.textContent.trim() === lng && item.classList.add(styles.lang_link_active));
   }
 
-  const lang_links = document.querySelectorAll(`.${styles.lang_link}`);
 
   const handleChangeLanguage = (e) => {
     e.preventDefault();
-    lang_links.forEach(item => item.classList.remove(styles.lang_link_active));
     changeLanguage(e.target.innerHTML);
-    e.target.classList.add(styles.lang_link_active);
+    indicateChoosedLanguage(e.target.innerHTML);
     localStorage.setItem('selectedLanguage', e.target.innerHTML)
   }
   
@@ -53,20 +47,18 @@ function App() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', updateDB));
-  const [lang, setLang] = useState('en')
-  //const [dbDisabled, setDbDisabled] = useState(false);
-  console.log("isLoading", isLoading);
 
+  console.log("isLoading", isLoading);
 
   useEffect(() => {
     const selectedLanguage = localStorage.getItem('selectedLanguage');
     if (!selectedLanguage) {
     changeLanguage('en');
-    indicateChangedLanguage('en');
-  } else {
+    indicateChoosedLanguage('en');
+    } else {
     changeLanguage(selectedLanguage);
-    indicateChangedLanguage(selectedLanguage);
-  }
+    indicateChoosedLanguage(selectedLanguage);
+    }
   }, [])
 
   const updateItems = useCallback(
