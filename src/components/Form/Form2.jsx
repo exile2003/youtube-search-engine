@@ -7,6 +7,8 @@ import { openModalWindow } from '../ModalWindow/Modal'
 
 import { useTranslation } from 'react-i18next';
 import '../../services/i18n';
+import { use } from 'i18next';
+
 
 let youtubeDB = [];
 let tempDB = [];
@@ -17,14 +19,19 @@ function Form({
       updateDB,
       dataBase 
      }) {
-      console.log("Form. dataBase", dataBase?.length);
+      console.log("Form2. dataBase", dataBase?.length);
 
-      const { t } = useTranslation();
+      //const { t } = useTranslation();
+      //const searchButtonRef = useRef(null);
+
+      const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          // Выполняем действие клика, если нажата клавиша Enter
+          //searchButtonRef.current.click();
+          alert("enter!")
+        }
+      };
       
-      const searchButtonRef = useRef(null);
-      const fileDownloadButtonRef = useRef(null);
-      const titleInputRef = useRef(null);
-
       if (dataBase!= null || dataBase != undefined) youtubeDB = dataBase;
 
       const [title, setTitle] = useState('');
@@ -45,7 +52,6 @@ function Form({
 
       const handleFileDownload = (event) => {
 
-        console.log("handleFileDownload")
           const file = event.target.files[0];
 
           updateItems([]);
@@ -62,9 +68,9 @@ function Form({
       const getFile = (file) => {
       
           updateIsLoading(true);
-          //console.log("Form. getFile. youtubeDB before", youtubeDB)
+          console.log("Form. getFile. youtubeDB before", youtubeDB)
           youtubeDB = [];
-          //console.log("Form. getFile. youtubeDB after", youtubeDB)
+          console.log("Form. getFile. youtubeDB after", youtubeDB)
 
           const reader = new FileReader();
           reader.readAsText(file);
@@ -87,13 +93,17 @@ function Form({
               date: item.lastChild?.textContent
             }));
             
-            //console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
-            console.log("fileDownload", youtubeDB.length);
+            console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
             saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
             updateDB(youtubeDB);
             updateIsLoading(false)
           }    
       }
+
+      const handleSubmit2 = (event) => {
+        event.preventDefault(); // Отменяем стандартное поведение отправки формы
+        alert('Search button clicked! Form2');
+      };
 
       const handleSubmit = (event) => {
           event.preventDefault();
@@ -133,20 +143,9 @@ function Form({
             
           }, 0)
           
-          if(dataBase == undefined) {
-            openModalWindow();           
-          }
+          if(dataBase == undefined) openModalWindow();
         
       }
-
-      const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-          // Выполняем действие клика, если нажата клавиша Enter
-          //searchButtonRef.current.click();
-         //chooseFile.click()
-         fileDownloadButtonRef.current.click();
-        }
-      };
 
       const filterYoutubeDB = (youtubeDB, title, channel, dateFrom, dateTo) => {
 
@@ -192,59 +191,51 @@ function Form({
         setDateFrom('2017-01-01'); 
         setDateTo(moment().format('YYYY-MM-DD'));
       }
-
+/*
       useEffect(() => {
-        console.log("useEffect", dataBase)
-        if(dataBase == undefined) {
-          fileDownloadButtonRef.current.focus();
-        } else {
-          titleInputRef.current.focus();
+        Устанавливаем фокус на кнопку при первой загрузке
+       if (searchButtonRef.current) {
+         searchButtonRef.current.focus();
         }
-        
-        // Устанавливаем фокус на кнопку при первой загрузке
-
-      }, [dataBase]);
-
+      }, []);
+*/
     return (
       <div className={styles.container}>
         <div className={styles.header}>
-          <div className={styles.header__title}>Youtube videos</div>
+          <div className={styles.header__title}>Youtube videos-2</div>
          
-          {/* <div className={styles.fileDownloadButton} ref={fileDownloadButtonRef}> */}
-            <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileDownload} />
-            <label  htmlFor="chooseFile" className={styles.custom_file_download} onKeyDown={ handleKeyDown } ref={fileDownloadButtonRef}  tabIndex="0" >
-              {t('Download data')}
-            </label>
-          {/* </div> */}
-                 
+          <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileDownload} />
+          <label htmlFor="chooseFile" className={styles.custom_file_download} >
+            Download data
+          </label>            
         </div>
        
-        <form onSubmit={handleSubmit} className={styles.form} >
+        <form onSubmit={handleSubmit2} className={styles.form}>
 
-            <label htmlFor="name" className={styles.name} >{t('Video title:')}&nbsp;&nbsp;</label>
-            <input type="text" ref = {titleInputRef} value={title} id={styles.name} onChange={(e) => setTitle(e.target.value)} />
+            <label htmlFor="name" className={styles.name} >Video title:&nbsp;&nbsp;</label>
+            <input type="text" value={title} id={styles.name} onChange={(e) => setTitle(e.target.value)} />
          
-            <label htmlFor="channel" className={styles.channel} >{t('Channel title:')}&nbsp;&nbsp;</label>
+            <label htmlFor="channel" className={styles.channel} >Channel title:&nbsp;&nbsp;</label>
             <input type="text" value={channel} id={styles.channel} onChange={(e) => setChannel(e.target.value)} />
        
             <label  htmlFor="dateFrom" className={styles.dateFrom}>
-              <div id={styles.data}>{t('Date: ')}</div>
-              <div id={styles.from}>{t('from')}</div>
+              <div id={styles.data}>Date: </div>
+              <div id={styles.from}>from</div>
             </label>
             <input type="date" value={dateFrom} id={styles.dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
             
-            <label  htmlFor="dateTo" className={styles.dateTo}>{t('to')}</label>
+            <label  htmlFor="dateTo" className={styles.dateTo}>to</label>
             <input type="date" value={dateTo} id={styles.dateTo} onChange={(e) => setDateTo(e.target.value)} />
-            <button className={styles.resetDate} onClick={resetDate} type="button" >{t('Dates reset')}</button>
+            <button className={styles.resetDate} onClick={resetDate} type="button">Dates reset</button>
         
-            <label htmlFor="checkbox">{t('Eliminate repetitions')}</label>
+            <label htmlFor="checkbox">Eliminate repetitions</label>
             <input type="checkbox" id="checkbox" className={styles.checkbox} checked={unique} onChange={(e) => setUnique(e.target.checked)} /> 
             {/* <div onKeyDown={handleKeyDown} tabIndex="0"> */}
-              <button type="submit" ref={searchButtonRef} >{t('Search')}</button>
+              <button type="submit" >Search</button>
             {/* </div> */}
                       
             <div className={styles.itemsNumber}>
-            { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;{t('Number of found videos: ')}{itemsNumber}</div> : ''}
+            { !!itemsNumber ? <div>&nbsp;&nbsp;&nbsp;&nbsp;Number of found videos: {itemsNumber}</div> : ''}
             </div>
         </form>
       </div>

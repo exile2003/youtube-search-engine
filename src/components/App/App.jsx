@@ -1,4 +1,4 @@
-import { useState, memo, useEffect, useCallback } from 'react'
+import { useState, memo, useEffect, useCallback, useMemo } from 'react'
 import { flushSync } from 'react-dom';
 import { RingLoader } from 'react-spinners'
 import { useTranslation } from 'react-i18next';
@@ -41,7 +41,20 @@ function App() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', updateDB));
+  //const [dataBase, setDB] = useState([]);
 
+  //const memoDataBase = useCallback(flushSync(() => dataBase), []);
+
+  const updateItems = useCallback(
+      (value) => {
+        flushSync(() => setItems(value));
+  }, [])
+
+  const updateIsLoading = useCallback(
+    (value) => {
+    flushSync(() => setIsLoading(value));
+  }, [])
+  
   useEffect(() => {
     const selectedLanguage = localStorage.getItem('selectedLanguage');
     if (!selectedLanguage) {
@@ -53,15 +66,6 @@ function App() {
     }
   }, [])
 
-  const updateItems = useCallback(
-      (value) => {
-        flushSync(() => setItems(value));
-  }, [])
-
-  const updateIsLoading = (value) => {
-    flushSync(() => setIsLoading(value));
-  }
-    
   return ( 
     <>
     {isLoading && <div className={styles.spinner}><RingLoader /></div>}

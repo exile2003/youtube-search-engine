@@ -1,4 +1,12 @@
+//*:focus { outline: 3px solid rgb(44, 55, 150) !important; }
+
+*:focus {
+  outline: none; /* Убираем стандартную обводку */
+  box-shadow: 0 0 5px 2px rgba(74, 144, 226, 0.6); /* Синяя тень */
+}
+
 body {
+
   margin: 8px;
   background-image: linear-gradient(90deg, #ddf4ff 30%, #dafbe1);
 

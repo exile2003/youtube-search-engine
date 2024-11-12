@@ -10,6 +10,7 @@ function ModalWindow() {
   const [opened, { open, close }] = useDisclosure(false);
   openModalWindow = open;
   console.log("ModalWindow", Modal)
+  
 
   return (
     <>
