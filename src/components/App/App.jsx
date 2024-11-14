@@ -33,11 +33,6 @@ function App() {
     localStorage.setItem('selectedLanguage', e.target.innerHTML)
   }
   
-  const updateDB = useCallback(
-    (value) => {
-      setDB(value);
-  }, [])
-
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', updateDB));
@@ -53,6 +48,11 @@ function App() {
   const updateIsLoading = useCallback(
     (value) => {
     flushSync(() => setIsLoading(value));
+  }, [])
+
+  const updateDB = useCallback(
+    (value) => {
+      setDB(value);
   }, [])
   
   useEffect(() => {
