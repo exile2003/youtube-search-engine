@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 //import M from 'materialize-css';
-import { openModalWindow } from '../components/Modal'
+import { openModalWindow } from '../components/ModalWindow/Modal'
 
 function loadDB(objectStore, databaseName, key, callback) {
     //const message = useMessage()
