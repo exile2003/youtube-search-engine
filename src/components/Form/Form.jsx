@@ -50,7 +50,7 @@ function Form({
 
           updateItems([]);
           setItemsNumber(0);
-          setFileID(() => Symbol())
+          setFileID(() => Symbol());
 
           try {
             if(file) getFile(file);
