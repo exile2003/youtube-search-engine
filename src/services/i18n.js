@@ -17,7 +17,8 @@ const resources = {
       "Eliminate repetition": "Eliminate repetition",
       "Download data": "Download data",
       "Dates reset": "Dates reset",
-      "Search": "Search"
+      "Search": "Search",
+      "Modal_Window_Description": 'Click the "Download data" button and select the html data file previously downloaded from your YouTube account.'
     }
   },
   ru: {
@@ -35,7 +36,7 @@ const resources = {
       "Search": "Поиск",
       "Number of found videos: ": "Количество найденных видео: ",
       "No database available": "База данных отсутствует",
-      'Click the "Download data" button and select the html data file previously downloaded from your YouTube account.':'Нажмите кнопку "Загрузить данные" и выберите предварительно скачанный с аккаунта YouTube файл с данными в формате html.'
+      "Modal_Window_Description":'Нажмите кнопку "Загрузить данные" и выберите предварительно скачанный с аккаунта YouTube файл с данными в формате html.'
     }
   }
 };

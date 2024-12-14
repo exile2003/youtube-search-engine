@@ -14,7 +14,7 @@ function saveDB(database, objectStore, databaseName, key) {
         db = openRequest.result;
         let transaction = db.transaction([objectStore], 'readwrite');
         let store = transaction.objectStore(objectStore);
-        let request = store.add(database, key);
+        let request = store.put(database, key);
         request.onsuccess = function(e) {
             console.log('База данных добавлена в хранилище', request.result);
         }

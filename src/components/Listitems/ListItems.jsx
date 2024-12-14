@@ -4,7 +4,10 @@ import moment from 'moment'
 
 function ListItems({ items }) {
 
-  let dateFormat = '';
+  const innerHeight = window.innerHeight;
+  const innerWidth = window.innerWidth;
+
+   let dateFormat = '';
   if(items[0]?.date.split('')[0].charCodeAt() < 57) {
     moment.locale('ru');
     dateFormat = 'DD MMMM YYYY, HH:mm:ss';

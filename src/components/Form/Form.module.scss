@@ -1,4 +1,4 @@
-//*:focus { outline: 3px solid rgb(44, 55, 150) !important; }
+//*:focus { outline: 3px solid rgb(150, 60, 44) !important; }
 
 *:focus {
   outline: none; /* Убираем стандартную обводку */
@@ -120,16 +120,11 @@ body {
           grid-column: 1;
         }
 
-        &[for="dateFrom"] {
-          grid-column: 1;
-          display: inline-block;
-          //  text-align: right;
-        }
+      }
 
-        &[for="dateTo"] {
-          grid-column: 3;
-          text-align: right;
-        }
+      .dateTo {
+        grid-column: 3;
+        text-align: right;
       }
 
       input {
@@ -170,6 +165,7 @@ body {
 
       #dateTo {
         grid-column: 4;
+        
       }
 
       .resetDate {

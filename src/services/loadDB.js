@@ -1,9 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-//import M from 'materialize-css';
-import { openModalWindow } from '../components/ModalWindow/Modal'
 
-function loadDB(objectStore, databaseName, key, callback) {
-    //const message = useMessage()
+function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
     let db;
     let openRequest = indexedDB.open(databaseName, 1);
 
@@ -24,12 +21,12 @@ function loadDB(objectStore, databaseName, key, callback) {
             let store = transaction.objectStore(objectStore);
             let request = store.get(key);
             request.onsuccess = function() {
-                console.log("request.onsuccess")
-                console.log("App. LoadDB. request.result", request.result)
+                //console.log("request.onsuccess")
+                console.log("LoadDB. request.onsuccess", request.result)
                 if(!!request.result) {
-                    callback(request.result);
+                    updateDB(request.result);
                 } else {  
-                    if(!!openModalWindow) openModalWindow();
+                    udateOpened(true);
                 }
                 return;
             }
