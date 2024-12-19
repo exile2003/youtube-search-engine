@@ -1,24 +1,23 @@
 function saveDB(database, objectStore, databaseName, key) {
+  let db;
+  const openRequest = indexedDB.open(databaseName, 1);
 
-    let db;
-    let openRequest = indexedDB.open(databaseName, 1);
-
-    openRequest.onupgradeneeded = function() {
-        let thisDB = openRequest.result;
-        if(! thisDB.objectStoreNames.contains(objectStore)) {
-            thisDB.createObjectStore(objectStore)
-        }
+  openRequest.onupgradeneeded = function () {
+    const thisDB = openRequest.result;
+    if (!thisDB.objectStoreNames.contains(objectStore)) {
+      thisDB.createObjectStore(objectStore);
     }
+  };
 
-    openRequest.onsuccess = function() {
-        db = openRequest.result;
-        let transaction = db.transaction([objectStore], 'readwrite');
-        let store = transaction.objectStore(objectStore);
-        let request = store.put(database, key);
-        request.onsuccess = function(e) {
-            console.log('База данных добавлена в хранилище', request.result);
-        }
-    }
+  openRequest.onsuccess = function () {
+    db = openRequest.result;
+    const transaction = db.transaction([objectStore], 'readwrite');
+    const store = transaction.objectStore(objectStore);
+    const request = store.put(database, key);
+    request.onsuccess = function () {
+      console.log('База данных добавлена в хранилище', request.result);
+    };
+  };
 }
 
-export default saveDB
+export default saveDB;
