@@ -9,7 +9,6 @@ import saveDB from '../../services/saveDB';
 import styles from './Form.module.scss';
 
 let youtubeDB = [];
-let tempDB = [];
 
 function Form({
   updateItems,
@@ -19,7 +18,6 @@ function Form({
   dataBase,
   opened,
 }) {
-  console.log('Form. dataBase', dataBase?.length);
 
   const { t } = useTranslation();
 
@@ -32,8 +30,8 @@ function Form({
 
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
-  const [dateFrom, setDateFrom] = useState('2019-12-31');//'2017-01-01');
-  const [dateTo, setDateTo] = useState('2020-01-01');//moment().format('YYYY-MM-DD'));
+  const [dateFrom, setDateFrom] = useState('2017-01-01');
+  const [dateTo, setDateTo] = useState(moment().format('YYYY-MM-DD'));
   const [unique, setUnique] = useState(false);
   const [itemsNumber, setItemsNumber] = useState(0);
   const [fileID, setFileID] = useState(null);
@@ -48,7 +46,6 @@ function Form({
 
   // Method for handle the downloaded file with youtube data
   const handleFileDownload = (event) => {
-    console.log('handleFileDownload');
     const file = event.target.files[0];
 
     updateItems([]);
@@ -106,7 +103,7 @@ function Form({
               | dateTo != dateToPrevious.current
               | unique != uniquePrevious.current
       ) {
-        tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+        const tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
 
         if (unique) {
           const uniqueDB = removeDuplicates(tempDB);
@@ -157,10 +154,6 @@ function Form({
     const dateFormat = moment.locale() === 'ru' 
       ? 'DD MMMM YYYY, HH:mm:ss' 
       : 'MMMM DD YYYY, HH:mm:ss';
-
-      console.log(
-      moment('2020-01-01', dateFormat)
-      )
       
   return youtubeDB
     .filter((item) => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
