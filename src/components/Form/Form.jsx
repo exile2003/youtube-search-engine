@@ -32,8 +32,8 @@ function Form({
 
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
-  const [dateFrom, setDateFrom] = useState(() => '2017-01-01');
-  const [dateTo, setDateTo] = useState(() => moment().format('YYYY-MM-DD'));
+  const [dateFrom, setDateFrom] = useState('2019-12-31');//'2017-01-01');
+  const [dateTo, setDateTo] = useState('2020-01-01');//moment().format('YYYY-MM-DD'));
   const [unique, setUnique] = useState(false);
   const [itemsNumber, setItemsNumber] = useState(0);
   const [fileID, setFileID] = useState(null);
@@ -79,16 +79,14 @@ function Form({
       const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
 
       // Form the youtubeDB array with youtube videos data
-      allSelectors.forEach((item) => item.children[0] && youtubeDB.push({
-        title: item.children[0]?.textContent,
-        titleLink: item.children[0]?.href,
-        channel: item.children[2]?.textContent,
-        channelLink: item.children[2]?.href,
-        date: item.lastChild?.textContent,
-      }));
+      youtubeDB = Array.from(allSelectors).map((item) => ({
+          title: item.children[0]?.textContent || '',
+          titleLink: item.children[0]?.href || '',
+          channel: item.children[2]?.textContent || '',
+          channelLink: item.children[2]?.href || '',
+          date: item.lastChild?.textContent || '',
+      })).filter(item => item.title !== '');
 
-      // console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
-      console.log('fileDownload', youtubeDB.length);
       saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
       updateDB(youtubeDB);
       updateIsLoading(false);
@@ -117,7 +115,6 @@ function Form({
         } else {
           setItemsNumber(tempDB.length);
           updateItems(tempDB);
-          console.log('The last operation');
         }
 
         titlePrevious.current = title;
@@ -152,26 +149,26 @@ function Form({
     dateFrom,
     dateTo,
   ) => {
-    let dateFormat = '';
-    if (youtubeDB[0]?.date.split('')[0].charCodeAt() < 57) {
+
+    if (/^[0-9].*$/.test(youtubeDB[0]?.date)) {
       moment.locale('ru');
-      dateFormat = 'DD MMMM YYYY, HH:mm:ss';
-    } else {
-      moment.locale('en');
-      dateFormat = 'MMMM DD YYYY, HH:mm:ss';
     }
 
-    const result = youtubeDB
-      .filter((item) => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
-      .filter((item) => item?.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
-      .filter((item) => (item.date && dateFrom
-        ? moment(item?.date, dateFormat).unix() >= moment(dateFrom, 'YYYY-MM-DD').unix()
-        : true))
-      .filter((item) => (item.date && dateTo
-        ? moment(item?.date, dateFormat).unix() <= moment(dateTo, 'YYYY-MM-DD').unix() + 86400
-        : true));
-    return result;
-  };
+    const dateFormat = moment.locale() === 'ru' 
+      ? 'DD MMMM YYYY, HH:mm:ss' 
+      : 'MMMM DD YYYY, HH:mm:ss';
+
+      console.log(
+      moment('2020-01-01', dateFormat)
+      )
+      
+  return youtubeDB
+    .filter((item) => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
+    .filter((item) => item?.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
+    .filter((item) => 
+      item.date && moment(item.date, dateFormat).isBetween(dateFrom, moment(dateTo).endOf('day'))
+    )
+  }
 
   const removeDuplicates = (items) => {
     const uniqueItems = {};
@@ -185,19 +182,15 @@ function Form({
     return Object.values(uniqueItems);
   };
 
-  const resetDate = (event) => {
-    event.preventDefault();
+  const resetDate = () => {
     setDateFrom('2017-01-01');
     setDateTo(moment().format('YYYY-MM-DD'));
   };
 
   useEffect(() => {
-    console.log('Form. useEffect-2', dataBase, opened);
     if (dataBase == undefined) {
-      console.log('Form. useEffect-2. DownloadButton.', fileDownloadButtonRef);
       fileDownloadButtonRef.current.focus();
     } else {
-      console.log('Form. useEffect-2. TitleInput.');
       titleInputRef.current.focus();
     }
   }, [dataBase, opened]);

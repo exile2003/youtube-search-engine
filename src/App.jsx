@@ -16,7 +16,6 @@ const MemoForm = memo(Form);
 const MemoListItems = memo(ListItems);
 
 function App() {
-  console.log('App.');
   const { i18n, t } = useTranslation();
 
   const changeLanguage = useCallback((lng) => i18n.changeLanguage(lng), []);
@@ -28,7 +27,6 @@ function App() {
   };
 
   const handleChangeLanguage = (e) => {
-    e.preventDefault();
     changeLanguage(e.target.innerHTML);
     indicateChoosedLanguage(e.target.innerHTML);
     localStorage.setItem('selectedLanguage', e.target.innerHTML);
@@ -46,17 +44,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', udateOpened, updateDB));
   const [opened, setOpened] = useState(false);
-
-  console.log(
-    'items',
-    items,
-    'isLoading',
-    isLoading,
-    'dataBase',
-    dataBase,
-    'opened',
-    opened,
-  );
 
   const updateItems = useCallback((value) => {
     flushSync(() => setItems(value));
@@ -83,8 +70,8 @@ function App() {
       <div style={isLoading ? { display: 'none' } : {}}>
         <div className={styles.language}>
           <div className={styles.lang_links}>
-            <a className={styles.lang_link} onClick={(e) => handleChangeLanguage(e)}>en</a>
-            <a className={styles.lang_link} onClick={(e) => handleChangeLanguage(e)}>ru</a>
+            <a className={styles.lang_link} onClick={handleChangeLanguage}>en</a>
+            <a className={styles.lang_link} onClick={handleChangeLanguage}>ru</a>
           </div>
         </div>
         <MemoForm

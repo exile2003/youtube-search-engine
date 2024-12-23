@@ -3,7 +3,6 @@ function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
   const openRequest = indexedDB.open(databaseName, 1);
 
   openRequest.onupgradeneeded = function () {
-    console.log('openRequest.onupgradeneeded');
     const thisDB = openRequest.result;
     if (!thisDB.objectStoreNames.contains(objectStore)) {
       thisDB.createObjectStore(objectStore);
@@ -11,15 +10,12 @@ function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
   };
 
   openRequest.onsuccess = function () {
-    console.log('openRequest.onsuccess');
     db = openRequest.result;
     if (db.objectStoreNames.contains(objectStore)) {
       const transaction = db.transaction([objectStore], 'readonly');
       const store = transaction.objectStore(objectStore);
       const request = store.get(key);
       request.onsuccess = function () {
-        // console.log("request.onsuccess")
-        console.log('LoadDB. request.onsuccess', request.result);
         if (request.result) {
           updateDB(request.result);
         } else {
@@ -29,7 +25,6 @@ function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
     } else {
       const request2 = indexedDB.deleteDatabase(databaseName);
       request2.onsuccess = function () {
-        console.log('База данных удалена');
       };
     }
     openRequest.onerror = function () {
