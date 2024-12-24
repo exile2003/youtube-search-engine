@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 
 import saveDB from '../../services/saveDB';
 import styles from './Form.module.scss';
+import { parseYouTubeFile, filterYoutubeDB, removeDuplicates } from '../../utils/utilityFunctions'
 
-let youtubeDB = [];
 
 function Form({
   updateItems,
   updateIsLoading,
-  udateOpened,
+  updateOpened,
   updateDB,
   dataBase,
   opened,
@@ -24,9 +24,6 @@ function Form({
   const searchButtonRef = useRef(null);
   const fileDownloadButtonRef = useRef(null);
   const titleInputRef = useRef(null);
-  const fileDownloadInputRef = useRef(null);
-
-  if (dataBase != null || dataBase != undefined) youtubeDB = dataBase;
 
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
@@ -34,13 +31,17 @@ function Form({
   const [dateTo, setDateTo] = useState(moment().format('YYYY-MM-DD'));
   const [unique, setUnique] = useState(false);
   const [itemsNumber, setItemsNumber] = useState(0);
-  const [fileID, setFileID] = useState(null);
+// уникальный идентификатор, который создается каждый раз при скачивании файла для случая, 
+//когда все поля запроса равны предыдущим значениям (например значениям по-умолчанию), 
+//а файл является другим. В этом случае при нажатии на "Поиск" происходит выбор новых данных для вывода
+  const [fileID, setFileID] = useState(null); 
 
+// Кэш для хранения данных введенных в поля поиска формы в предыдущий раз, 
+// чтобы не проводить повторный поиск, если данные не изменились
   const titlePrevious = useRef(null);
   const channelPrevious = useRef(null);
   const dateFromPrevious = useRef(null);
   const dateToPrevious = useRef(null);
-  const itemsPrevious = useRef(null);
   const uniquePrevious = useRef(null);
   const fileIDPrevious = useRef(null);
 
@@ -67,22 +68,8 @@ function Form({
 
     reader.onload = (event) => {
       const fileContent = event.target.result;
-      updateItems([]);
-      youtubeDB = [];
-      // Parsing the content of the input file and assign result to domTree variable
-      const domTree = new DOMParser().parseFromString(fileContent, 'text/html');
-
-      // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
-      const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
-
-      // Form the youtubeDB array with youtube videos data
-      youtubeDB = Array.from(allSelectors).map((item) => ({
-          title: item.children[0]?.textContent || '',
-          titleLink: item.children[0]?.href || '',
-          channel: item.children[2]?.textContent || '',
-          channelLink: item.children[2]?.href || '',
-          date: item.lastChild?.textContent || '',
-      })).filter(item => item.title !== '');
+   
+      const youtubeDB = parseYouTubeFile(fileContent);
 
       saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
       updateDB(youtubeDB);
@@ -95,30 +82,23 @@ function Form({
     updateIsLoading(true);
 
     setTimeout(() => {
-      if (
-        fileID != fileIDPrevious.current
-              | title != titlePrevious.current
-              | channel != channelPrevious.current
-              | dateFrom != dateFromPrevious.current
-              | dateTo != dateToPrevious.current
-              | unique != uniquePrevious.current
+      if ( fileID != fileIDPrevious.current
+           | title != titlePrevious.current
+           | channel != channelPrevious.current
+           | dateFrom != dateFromPrevious.current
+           | dateTo != dateToPrevious.current
+           | unique != uniquePrevious.current
       ) {
-        const tempDB = filterYoutubeDB(youtubeDB, title, channel, dateFrom, dateTo);
+        const results = filterYoutubeDB(dataBase, title, channel, dateFrom, dateTo);
+        const finalResults = unique ? removeDuplicates(results) : results;
 
-        if (unique) {
-          const uniqueDB = removeDuplicates(tempDB);
-          setItemsNumber(uniqueDB.length);
-          updateItems(uniqueDB);
-        } else {
-          setItemsNumber(tempDB.length);
-          updateItems(tempDB);
-        }
+        setItemsNumber(finalResults.length);
+        updateItems(finalResults);
 
         titlePrevious.current = title;
         channelPrevious.current = channel;
         dateFromPrevious.current = dateFrom;
         dateToPrevious.current = dateTo;
-        itemsPrevious.current = tempDB;
         uniquePrevious.current = unique;
         fileIDPrevious.current = fileID;
       }
@@ -126,7 +106,7 @@ function Form({
     }, 0);
 
     if (dataBase == undefined) {
-      setTimeout(() => udateOpened(true), 0);
+      setTimeout(() => updateOpened(true), 0);
     } else {
       setTimeout(() => titleInputRef.current.focus(), 0);
     }
@@ -137,42 +117,6 @@ function Form({
       // Выполняем действие клика, если нажата клавиша Enter
       fileDownloadButtonRef.current.click();
     }
-  };
-
-  const filterYoutubeDB = (
-    youtubeDB,
-    title,
-    channel,
-    dateFrom,
-    dateTo,
-  ) => {
-
-    if (/^[0-9].*$/.test(youtubeDB[0]?.date)) {
-      moment.locale('ru');
-    }
-
-    const dateFormat = moment.locale() === 'ru' 
-      ? 'DD MMMM YYYY, HH:mm:ss' 
-      : 'MMMM DD YYYY, HH:mm:ss';
-      
-  return youtubeDB
-    .filter((item) => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
-    .filter((item) => item?.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
-    .filter((item) => 
-      item.date && moment(item.date, dateFormat).isBetween(dateFrom, moment(dateTo).endOf('day'))
-    )
-  }
-
-  const removeDuplicates = (items) => {
-    const uniqueItems = {};
-
-    items.forEach((item) => {
-      if (!uniqueItems[item.title] || uniqueItems[item.title].date > item.date) {
-        uniqueItems[item.title] = item;
-      }
-    });
-
-    return Object.values(uniqueItems);
   };
 
   const resetDate = () => {
@@ -192,7 +136,7 @@ function Form({
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.header__title}>Youtube videos</div>
-        <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileDownload} ref={fileDownloadInputRef} />
+        <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileDownload} />
         <label htmlFor="chooseFile" className={styles.custom_file_download} onKeyDown={handleKeyDown} ref={fileDownloadButtonRef} tabIndex="0">
           {t('Download data')}
         </label>
