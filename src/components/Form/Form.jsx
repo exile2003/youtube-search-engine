@@ -2,7 +2,7 @@ import 'moment/dist/locale/ru';
 import '../../services/i18n';
 
 import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import saveDB from '../../services/saveDB';
@@ -25,11 +25,13 @@ function Form({
   const fileDownloadButtonRef = useRef(null);
   const titleInputRef = useRef(null);
 
-  const [title, setTitle] = useState('');
-  const [channel, setChannel] = useState('');
-  const [dateFrom, setDateFrom] = useState('2017-01-01');
-  const [dateTo, setDateTo] = useState(moment().format('YYYY-MM-DD'));
-  const [unique, setUnique] = useState(false);
+  const [filters, setFilters] = useState({
+    title: '',
+    channel: '',
+    dateFrom: '2017-01-01',
+    dateTo: new Date().toISOString().split('T')[0],
+    unique: false,
+  });
   const [itemsNumber, setItemsNumber] = useState(0);
 // уникальный идентификатор, который создается каждый раз при скачивании файла для случая, 
 //когда все поля запроса равны предыдущим значениям (например значениям по-умолчанию), 
@@ -38,12 +40,7 @@ function Form({
 
 // Кэш для хранения данных введенных в поля поиска формы в предыдущий раз, 
 // чтобы не проводить повторный поиск, если данные не изменились
-  const titlePrevious = useRef(null);
-  const channelPrevious = useRef(null);
-  const dateFromPrevious = useRef(null);
-  const dateToPrevious = useRef(null);
-  const uniquePrevious = useRef(null);
-  const fileIDPrevious = useRef(null);
+  const prevData = useRef({});
 
   // Method for handle the downloaded file with youtube data
   const handleFileDownload = (event) => {
@@ -82,26 +79,26 @@ function Form({
     updateIsLoading(true);
 
     setTimeout(() => {
-      if ( fileID != fileIDPrevious.current
-           | title != titlePrevious.current
-           | channel != channelPrevious.current
-           | dateFrom != dateFromPrevious.current
-           | dateTo != dateToPrevious.current
-           | unique != uniquePrevious.current
+      if ( fileID != prevData?.current?.fileID
+           | filters.title != prevData?.current?.title
+           | filters.channel != prevData?.current?.channel
+           | filters.dateFrom != prevData?.current?.dateFrom
+           | filters.dateTo != prevData?.current?.dateTo
+           | filters.unique != prevData?.current?.unique       
       ) {
-        const results = filterYoutubeDB(dataBase, title, channel, dateFrom, dateTo);
-        const finalResults = unique ? removeDuplicates(results) : results;
+      const results = filterYoutubeDB(dataBase, filters);
+        const finalResults = filters.unique ? removeDuplicates(results) : results;
 
         setItemsNumber(finalResults.length);
         updateItems(finalResults);
 
-        titlePrevious.current = title;
-        channelPrevious.current = channel;
-        dateFromPrevious.current = dateFrom;
-        dateToPrevious.current = dateTo;
-        uniquePrevious.current = unique;
-        fileIDPrevious.current = fileID;
-      }
+        prevData.current.title = filters.title;
+        prevData.current.channel = filters.channel;
+        prevData.current.dateFrom = filters.dateFrom;
+        prevData.current.dateTo = filters.dateTo;
+        prevData.current.unique = filters.unique;
+        prevData.current.fileID = fileID;
+     }
       updateIsLoading(false);
     }, 0);
 
@@ -120,8 +117,19 @@ function Form({
   };
 
   const resetDate = () => {
-    setDateFrom('2017-01-01');
-    setDateTo(moment().format('YYYY-MM-DD'));
+    setFilters((prev) => ({
+      ...prev,
+      dateFrom: '2017-01-01',
+      dateTo: new Date().toISOString().split('T')[0]
+    }));
+  };
+
+  const handleChange = (e) => {
+      const { name, value, type, checked } = e.target;
+      setFilters((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
   };
 
   useEffect(() => {
@@ -148,26 +156,26 @@ function Form({
           {t('Video title:')}
 &nbsp;&nbsp;
         </label>
-        <input type="text" ref={titleInputRef} value={title} id={styles.name} onChange={(e) => setTitle(e.target.value)} />
+        <input type="text" name="title" ref={titleInputRef} value={filters.title} id={styles.name} onChange={handleChange} />
 
         <label htmlFor={styles.channel} className={styles.channel}>
           {t('Channel title:')}
 &nbsp;&nbsp;
         </label>
-        <input type="text" value={channel} id={styles.channel} onChange={(e) => setChannel(e.target.value)} />
+        <input type="text" name="channel" value={filters.channel} id={styles.channel} onChange={handleChange} />
 
         <label htmlFor={styles.dateFrom} className={styles.dateFrom}>
           <div id={styles.data}>{t('Date: ')}</div>
           <div id={styles.from}>{t('from')}</div>
         </label>
-        <input type="date" value={dateFrom} id={styles.dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+        <input type="date" name="dateFrom" value={filters.dateFrom} id={styles.dateFrom} onChange={handleChange} />
 
         <label htmlFor={styles.dateTo} className={styles.dateTo}>{t('to')}</label>
-        <input type="date" value={dateTo} id={styles.dateTo} onChange={(e) => setDateTo(e.target.value)} />
+        <input type="date" name="dateTo" value={filters.dateTo} id={styles.dateTo} onChange={handleChange} />
         <button className={styles.resetDate} onClick={resetDate} type="button">{t('Dates reset')}</button>
 
         <label htmlFor="checkbox">{t('Eliminate repetitions')}</label>
-        <input type="checkbox" id="checkbox" className={styles.checkbox} checked={unique} onChange={(e) => setUnique(e.target.checked)} />
+        <input type="checkbox" name="unique" id="checkbox" className={styles.checkbox} checked={filters.unique} onChange={handleChange} />
         <button type="submit" ref={searchButtonRef}>{t('Search')}</button>
         <div className={styles.itemsNumber}>
           { itemsNumber ? (

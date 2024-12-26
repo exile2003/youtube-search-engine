@@ -19,10 +19,7 @@ export const parseYouTubeFile = (fileContent) => {
 
 export const filterYoutubeDB = (
     youtubeDB,
-    title,
-    channel,
-    dateFrom,
-    dateTo,
+    filters
   ) => {
 
     if (/^[0-9].*$/.test(youtubeDB[0]?.date)) {
@@ -34,10 +31,10 @@ export const filterYoutubeDB = (
       : 'MMMM DD YYYY, HH:mm:ss';
       
   return youtubeDB
-    .filter((item) => item?.title?.toLowerCase().includes(title.trim().toLowerCase()))
-    .filter((item) => item?.channel?.toLowerCase().includes(channel.trim().toLowerCase()))
+    .filter((item) => item?.title?.toLowerCase().includes(filters.title.trim().toLowerCase()))
+    .filter((item) => item?.channel?.toLowerCase().includes(filters.channel.trim().toLowerCase()))
     .filter((item) => 
-      item.date && moment(item.date, dateFormat).isBetween(dateFrom, moment(dateTo).endOf('day'))
+      item.date && moment(item?.date, dateFormat).isBetween(filters.dateFrom, moment(filters.dateTo).endOf('day'))
     )
 }
 
