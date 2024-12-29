@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import saveDB from '../../services/saveDB';
 import styles from './Form.module.scss';
+import FileDownload from '../FileDownload/FileDownload';
 import { parseYouTubeFile, filterYoutubeDB, removeDuplicates } from '../../utils/utilityFunctions'
 
 
@@ -43,8 +44,8 @@ function Form({
   const prevData = useRef({});
 
   // Method for handle the downloaded file with youtube data
-  const handleFileDownload = (event) => {
-    const file = event.target.files[0];
+  const handleFileDownload = (file) => {
+    //const file = event.target.files[0];
 
     updateItems([]);
     setItemsNumber(0);
@@ -66,10 +67,10 @@ function Form({
     reader.onload = (event) => {
       const fileContent = event.target.result;
    
-      const youtubeDB = parseYouTubeFile(fileContent);
+      const parsedData = parseYouTubeFile(fileContent);
 
-      saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
-      updateDB(youtubeDB);
+      saveDB(parsedData, 'videos', 'youtubeDB', 'keyYoutubeDB');
+      updateDB(parsedData);
       updateIsLoading(false);
     };
   };
@@ -109,13 +110,6 @@ function Form({
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      // Выполняем действие клика, если нажата клавиша Enter
-      fileDownloadButtonRef.current.click();
-    }
-  };
-
   const resetDate = () => {
     setFilters((prev) => ({
       ...prev,
@@ -134,7 +128,7 @@ function Form({
 
   useEffect(() => {
     if (dataBase == undefined) {
-      fileDownloadButtonRef.current.focus();
+      fileDownloadButtonRef?.current?.focus();
     } else {
       titleInputRef.current.focus();
     }
@@ -144,10 +138,9 @@ function Form({
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.header__title}>Youtube videos</div>
-        <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileDownload} />
-        <label htmlFor="chooseFile" className={styles.custom_file_download} onKeyDown={handleKeyDown} ref={fileDownloadButtonRef} tabIndex="0">
-          {t('Download data')}
-        </label>
+        <div className={styles.file_download}>
+          <FileDownload  onFileDownload={handleFileDownload} />
+        </div>  
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -173,10 +166,10 @@ function Form({
         <label htmlFor={styles.dateTo} className={styles.dateTo}>{t('to')}</label>
         <input type="date" name="dateTo" value={filters.dateTo} id={styles.dateTo} onChange={handleChange} />
         <button className={styles.resetDate} onClick={resetDate} type="button">{t('Dates reset')}</button>
-
         <label htmlFor="checkbox">{t('Eliminate repetitions')}</label>
         <input type="checkbox" name="unique" id="checkbox" className={styles.checkbox} checked={filters.unique} onChange={handleChange} />
         <button type="submit" ref={searchButtonRef}>{t('Search')}</button>
+
         <div className={styles.itemsNumber}>
           { itemsNumber ? (
             <div>
