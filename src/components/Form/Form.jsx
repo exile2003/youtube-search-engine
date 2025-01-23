@@ -104,9 +104,8 @@ function Form({
     if (dataBase == undefined) {
       setTimeout(() => updateOpened(true), 0);
     } else {
-      setTimeout(() => fileDownloadButtonRef.current.focus(), 0);
+      setTimeout(() => titleInputRef.current.focus(), 0);
     }
-
   };
 
 

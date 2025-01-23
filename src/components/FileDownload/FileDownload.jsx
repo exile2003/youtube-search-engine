@@ -21,7 +21,7 @@ function FileDownload({ onFileDownload, ref }) {
   return (
     <div className={styles.header}>         
         <input type="file" id="chooseFile" className={styles.chooseFile} onChange={handleFileChange} ref={ref} />
-        <label   htmlFor="chooseFile" className={styles.custom_file_download} onKeyDown={handleKeyDown} tabIndex="0">
+        <label   htmlFor="chooseFile" className={styles.custom_file_download} onKeyDown={handleKeyDown} ref={ref} tabIndex="0">
             {t('Download data')}
         </label>
     </div>
