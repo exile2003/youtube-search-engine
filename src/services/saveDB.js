@@ -1,4 +1,4 @@
-function saveDB(database, objectStore, databaseName, key) {
+function saveDB(database, objectStore, databaseName, key) { 
   let db;
   const openRequest = indexedDB.open(databaseName, 1);
 

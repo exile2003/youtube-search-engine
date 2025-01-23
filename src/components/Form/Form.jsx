@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import saveDB from '../../services/saveDB';
 import styles from './Form.module.scss';
 import FileDownload from '../FileDownload/FileDownload';
+import FilterForm from '../FilterForm/FilterForm'
 import { parseYouTubeFile, filterYoutubeDB, removeDuplicates } from '../../utils/utilityFunctions'
 
 
@@ -22,7 +23,7 @@ function Form({
 
   const { t } = useTranslation();
 
-  const searchButtonRef = useRef(null);
+  //const searchButtonRef = useRef(null);
   const fileDownloadButtonRef = useRef(null);
   const titleInputRef = useRef(null);
 
@@ -45,20 +46,11 @@ function Form({
 
   // Method for handle the downloaded file with youtube data
   const handleFileDownload = (file) => {
-    //const file = event.target.files[0];
 
     updateItems([]);
     setItemsNumber(0);
     setFileID(() => Symbol());
 
-    try {
-      if (file) getFile(file);
-    } catch (error) {
-      console.error('Ошибка загрузки файла:', error);
-    }
-  };
-
-  const getFile = (file) => {
     updateIsLoading(true);
 
     const reader = new FileReader();
@@ -73,10 +65,14 @@ function Form({
       updateDB(parsedData);
       updateIsLoading(false);
     };
+
+    reader.onerror = () => {
+      console.error('File upload failed:', reader.error);
+    };
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleFilter = () => {
+    //event.preventDefault();
     updateIsLoading(true);
 
     setTimeout(() => {
@@ -88,6 +84,8 @@ function Form({
            | filters.unique != prevData?.current?.unique       
       ) {
       const results = filterYoutubeDB(dataBase, filters);
+
+      console.log(results);
         const finalResults = filters.unique ? removeDuplicates(results) : results;
 
         setItemsNumber(finalResults.length);
@@ -106,27 +104,13 @@ function Form({
     if (dataBase == undefined) {
       setTimeout(() => updateOpened(true), 0);
     } else {
-      setTimeout(() => titleInputRef.current.focus(), 0);
+      setTimeout(() => fileDownloadButtonRef.current.focus(), 0);
     }
+
   };
 
-  const resetDate = () => {
-    setFilters((prev) => ({
-      ...prev,
-      dateFrom: '2017-01-01',
-      dateTo: new Date().toISOString().split('T')[0]
-    }));
-  };
 
-  const handleChange = (e) => {
-      const { name, value, type, checked } = e.target;
-      setFilters((prev) => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-  };
-
-  useEffect(() => {
+ useEffect(() => {
     if (dataBase == undefined) {
       fileDownloadButtonRef?.current?.focus();
     } else {
@@ -139,46 +123,17 @@ function Form({
       <div className={styles.header}>
         <div className={styles.header__title}>Youtube videos</div>
         <div className={styles.file_download}>
-          <FileDownload  onFileDownload={handleFileDownload} />
+          <FileDownload  ref = {fileDownloadButtonRef} onFileDownload={handleFileDownload} />
         </div>  
       </div>
+      <FilterForm 
+          ref = {titleInputRef}
+          filters={filters}
+          setFilters={setFilters}
+          onFilter={handleFilter}
+          itemsNumber = {itemsNumber}
+      />
 
-      <form onSubmit={handleSubmit} className={styles.form}>
-
-        <label htmlFor={styles.name} className={styles.name}>
-          {t('Video title:')}
-&nbsp;&nbsp;
-        </label>
-        <input type="text" name="title" ref={titleInputRef} value={filters.title} id={styles.name} onChange={handleChange} />
-
-        <label htmlFor={styles.channel} className={styles.channel}>
-          {t('Channel title:')}
-&nbsp;&nbsp;
-        </label>
-        <input type="text" name="channel" value={filters.channel} id={styles.channel} onChange={handleChange} />
-
-        <label htmlFor={styles.dateFrom} className={styles.dateFrom}>
-          <div id={styles.data}>{t('Date: ')}</div>
-          <div id={styles.from}>{t('from')}</div>
-        </label>
-        <input type="date" name="dateFrom" value={filters.dateFrom} id={styles.dateFrom} onChange={handleChange} />
-
-        <label htmlFor={styles.dateTo} className={styles.dateTo}>{t('to')}</label>
-        <input type="date" name="dateTo" value={filters.dateTo} id={styles.dateTo} onChange={handleChange} />
-        <button className={styles.resetDate} onClick={resetDate} type="button">{t('Dates reset')}</button>
-        <label htmlFor="checkbox">{t('Eliminate repetitions')}</label>
-        <input type="checkbox" name="unique" id="checkbox" className={styles.checkbox} checked={filters.unique} onChange={handleChange} />
-        <button type="submit" ref={searchButtonRef}>{t('Search')}</button>
-
-        <div className={styles.itemsNumber}>
-          { itemsNumber ? (
-            <div>
-              {t('Number of found videos: ')}
-              {itemsNumber}
-            </div>
-          ) : ''}
-        </div>
-      </form>
     </div>
   );
 }

@@ -5,8 +5,9 @@ import { FixedSizeList } from 'react-window';
 function ListItems({ items }) {
   const { innerHeight } = window;
   const { innerWidth } = window;
-
+/*
   let dateFormat = '';
+ 
   if (items[0]?.date.split('')[0].charCodeAt() < 57) {
     moment.locale('ru');
     dateFormat = 'DD MMMM YYYY, HH:mm:ss';
@@ -14,6 +15,17 @@ function ListItems({ items }) {
     moment.locale('en');
     dateFormat = 'MMMM DD YYYY, HH:mm:ss';
   }
+
+ */
+console.log("items[0]?.date", items[0]?.date)
+
+ if (/^[0-9].*$/.test(items[0]?.date)) {
+      moment.locale('ru');
+    } else moment.locale('en');
+
+  let dateFormat = moment.locale() === 'ru' 
+    ? 'DD MMMM YYYY, HH:mm:ss' 
+    : 'MMMM DD YYYY, HH:mm:ss';
 
   return (
     <FixedSizeList
@@ -36,7 +48,7 @@ function ListItems({ items }) {
           {' '}
           - &nbsp;
           {moment(data[index].date, dateFormat).format('MMMM-DD-YYYY HH:mm:ss')}
-
+  
         </li>
       )}
 

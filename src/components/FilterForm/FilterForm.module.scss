@@ -1,0 +1,115 @@
+.form {
+    display: grid;
+    grid-template-columns: 200px repeat(5, 1fr);
+    gap: 15px;
+    align-items: center;
+
+    label {
+      &.name {
+        grid-column: 1;
+      }
+
+      &.channel {
+        grid-column: 1;
+      }
+
+    }
+
+    .dateTo {
+      grid-column: 3;
+      text-align: right;
+    }
+
+    input {
+      padding: 1px 2px;
+      margin: 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+
+      height: 25px;
+      font-size: 13.3333px;
+      font-weight: normal;
+
+      &#name {
+        grid-column: 2;
+      }
+
+      &#channel {
+        grid-column: 2;
+      }
+    }
+
+    .dateFrom {
+      grid-column: 1;
+      display: inline-block;
+
+      #data {
+        display: inline-block;
+      }
+
+      #from {
+        float: right;
+      }
+    }
+
+    #dateFrom {
+      grid-column: 2;
+    }
+
+    #dateTo {
+      grid-column: 4;
+      
+    }
+
+    .resetDate {
+      width: 110px;
+      grid-column: 6;
+    }
+
+    .checkbox {
+      width: 20px;
+      grid-column: 2;
+      margin: auto;
+    }
+
+    button {
+      grid-column: 1;
+
+      padding: 10px 20px;
+      border-radius: 4px;
+
+      width: 100px;
+      block-size: 35.34px;
+      color: #fff;
+      background-color: #007bff;
+      font-weight: normal;
+      font-size: 13.3333px;
+      line-height: 0px;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &:active {
+        background-color: #0056b3;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:disabled,
+      &:hover:disabled {
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        cursor: not-allowed;
+      }
+    }
+
+    .itemsNumber {
+      margin-left: 50px;
+      grid-column: 2 / 4;
+    }
+  }

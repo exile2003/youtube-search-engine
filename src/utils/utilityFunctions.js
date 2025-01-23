@@ -24,7 +24,7 @@ export const filterYoutubeDB = (
 
     if (/^[0-9].*$/.test(youtubeDB[0]?.date)) {
       moment.locale('ru');
-    }
+    } else moment.locale('en');
 
     const dateFormat = moment.locale() === 'ru' 
       ? 'DD MMMM YYYY, HH:mm:ss' 
