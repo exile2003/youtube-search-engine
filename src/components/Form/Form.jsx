@@ -30,7 +30,7 @@ function Form({
   const [filters, setFilters] = useState({
     title: '',
     channel: '',
-    dateFrom: '2017-01-01',
+    dateFrom: '2006-01-01',
     dateTo: new Date().toISOString().split('T')[0],
     unique: false,
   });
