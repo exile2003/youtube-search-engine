@@ -35,13 +35,21 @@ function Form({
     unique: false,
   });
   const [itemsNumber, setItemsNumber] = useState(0);
+
 // уникальный идентификатор, который создается каждый раз при скачивании файла для случая, 
-//когда все поля запроса равны предыдущим значениям (например значениям по-умолчанию), 
-//а файл является другим. В этом случае при нажатии на "Поиск" происходит выбор новых данных для вывода
+// когда все поля запроса равны предыдущим значениям (например значениям по-умолчанию), 
+// а файл является другим. В этом случае при нажатии на "Поиск" происходит выбор данных для вывода
+
+// a unique identifier that is created each time a file is downloaded for the case, 
+// when all fields of the request are equal to the previous values (e.g. default values), 
+// but the file is different. In this case, clicking on “Search” selects the data to output
   const [fileID, setFileID] = useState(null); 
 
-// Кэш для хранения данных введенных в поля поиска формы в предыдущий раз, 
+// кэш для хранения данных введенных в поля поиска формы в предыдущий раз, 
 // чтобы не проводить повторный поиск, если данные не изменились
+
+// cache for storing data entered into the form search fields the previous time, 
+// so that you don't have to search again if the data hasn't changed
   const prevData = useRef({});
 
   // Method for handle the downloaded file with youtube data
@@ -111,7 +119,7 @@ function Form({
 
  useEffect(() => {
     if (dataBase == undefined) {
-      fileDownloadButtonRef?.current?.focus();
+      fileDownloadButtonRef.current.focus();
     } else {
       titleInputRef.current.focus();
     }
@@ -122,12 +130,12 @@ function Form({
       <div className={styles.header}>
         <div className={styles.header__title}>Youtube videos</div>
         <div className={styles.file_download}>
-          <FileDownload  ref = {fileDownloadButtonRef} onFileDownload={handleFileDownload} />
+          <FileDownload  ref={fileDownloadButtonRef} onFileDownload={handleFileDownload} />
         </div>  
       </div>
       <FilterForm
-          refButton = {searchButtonRef} 
-          refInput = {titleInputRef}
+          refButton={searchButtonRef} 
+          refInput={titleInputRef}
           filters={filters}
           setFilters={setFilters}
           onFilter={handleFilter}
