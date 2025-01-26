@@ -17,6 +17,7 @@ function ListItems({ items }) {
   }
 
  */
+
 console.log("items[0]?.date", items[0]?.date)
 
  if (/^[0-9].*$/.test(items[0]?.date)) {
@@ -32,7 +33,7 @@ console.log("items[0]?.date", items[0]?.date)
       innerElementType="ul"
       height={innerHeight - 300}
       width={innerWidth - 40}
-      itemCount={items.length}
+      itemCount={items?.length}
       itemSize={30}
       itemData={items}
       style={{ overflowX: 'hidden' }}

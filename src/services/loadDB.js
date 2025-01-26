@@ -1,4 +1,4 @@
-function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
+function loadDB(objectStore, databaseName, key, updateOpened, updateDB) {
   let db;
   const openRequest = indexedDB.open(databaseName, 1);
 
@@ -19,7 +19,7 @@ function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
         if (request.result) {
           updateDB(request.result);
         } else {
-          udateOpened(true);
+          updateOpened(true);
         }
       };
     } else {

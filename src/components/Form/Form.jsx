@@ -23,7 +23,7 @@ function Form({
 
   const { t } = useTranslation();
 
-  //const searchButtonRef = useRef(null);
+  const searchButtonRef = useRef(null);
   const fileDownloadButtonRef = useRef(null);
   const titleInputRef = useRef(null);
 
@@ -46,7 +46,7 @@ function Form({
 
   // Method for handle the downloaded file with youtube data
   const handleFileDownload = (file) => {
-
+    
     updateItems([]);
     setItemsNumber(0);
     setFileID(() => Symbol());
@@ -66,13 +66,15 @@ function Form({
       updateIsLoading(false);
     };
 
+
     reader.onerror = () => {
       console.error('File upload failed:', reader.error);
     };
   };
 
+  //updateOpened(true);
+
   const handleFilter = () => {
-    //event.preventDefault();
     updateIsLoading(true);
 
     setTimeout(() => {
@@ -83,12 +85,11 @@ function Form({
            | filters.dateTo != prevData?.current?.dateTo
            | filters.unique != prevData?.current?.unique       
       ) {
-      const results = filterYoutubeDB(dataBase, filters);
-
-      console.log(results);
+      
+        const results = (dataBase !== undefined) ? filterYoutubeDB(dataBase, filters) : [];
         const finalResults = filters.unique ? removeDuplicates(results) : results;
 
-        setItemsNumber(finalResults.length);
+        setItemsNumber(finalResults?.length);
         updateItems(finalResults);
 
         prevData.current.title = filters.title;
@@ -108,7 +109,6 @@ function Form({
     }
   };
 
-
  useEffect(() => {
     if (dataBase == undefined) {
       fileDownloadButtonRef?.current?.focus();
@@ -125,14 +125,14 @@ function Form({
           <FileDownload  ref = {fileDownloadButtonRef} onFileDownload={handleFileDownload} />
         </div>  
       </div>
-      <FilterForm 
-          ref = {titleInputRef}
+      <FilterForm
+          refButton = {searchButtonRef} 
+          refInput = {titleInputRef}
           filters={filters}
           setFilters={setFilters}
           onFilter={handleFilter}
           itemsNumber = {itemsNumber}
       />
-
     </div>
   );
 }

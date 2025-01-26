@@ -14,7 +14,7 @@ function FileDownload({ onFileDownload, ref }) {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
           // Выполняем действие клика, если нажата клавиша Enter
-         // ref.current.click();
+          ref.current.click();
         }
     };
 

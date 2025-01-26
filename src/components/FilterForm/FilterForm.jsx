@@ -2,10 +2,10 @@ import React, {useRef} from 'react';
 import styles from './FilterForm.module.scss';
 import { useTranslation } from 'react-i18next';
 
-function FilterForm({ filters, setFilters, onFilter, itemsNumber, ref }) {
+function FilterForm({ filters, setFilters, onFilter, itemsNumber, refInput, refButton }) {
     const { t } = useTranslation();
 
-    const searchButtonRef = useRef(null);
+    //const searchButtonRef = useRef(null);
     //const titleInputRef = useRef(null);
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -30,7 +30,7 @@ function FilterForm({ filters, setFilters, onFilter, itemsNumber, ref }) {
       {t('Video title:')}
 &nbsp;&nbsp;
     </label>
-    <input type="text" name="title" ref={ref} value={filters.title} id={styles.name} onChange={handleChange} />
+    <input type="text" name="title" ref={refInput} value={filters.title} id={styles.name} onChange={handleChange} />
 
     <label htmlFor={styles.channel} className={styles.channel}>
       {t('Channel title:')}
@@ -49,7 +49,7 @@ function FilterForm({ filters, setFilters, onFilter, itemsNumber, ref }) {
     <button className={styles.resetDate} onClick={resetDates} type="button">{t('Dates reset')}</button>
     <label htmlFor="checkbox">{t('Eliminate repetitions')}</label>
     <input type="checkbox" name="unique" id="checkbox" className={styles.checkbox} checked={filters.unique} onChange={handleChange} />
-    <button type="button" onClick={onFilter} ref={searchButtonRef}>{t('Search')}</button>
+    <button type="button" onClick={onFilter} ref={refButton}>{t('Search')}</button>
 
     <div className={styles.itemsNumber}>
       { itemsNumber ? (
