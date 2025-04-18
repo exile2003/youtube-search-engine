@@ -185,8 +185,8 @@ function Form({
     return Object.values(uniqueItems);
   };
 
-  const resetDate = (event) => {
-    event.preventDefault();
+  const resetDate = () => {
+    //event.preventDefault();
     setDateFrom('2017-01-01');
     setDateTo(moment().format('YYYY-MM-DD'));
   };
