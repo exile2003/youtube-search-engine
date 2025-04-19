@@ -1,0 +1,76 @@
+
+    .chooseFile {
+        visibility: hidden;
+        display: none;
+    }
+    
+      .custom_file_download {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        margin: auto;
+        padding: 10px;
+        border-radius: 4px;
+    
+        width: 190px;
+        block-size: 35.34px;
+        color: #fff;
+        background-color: #007bff;
+        font-weight: normal;
+        font-size: 13.3333px;
+        cursor: pointer;
+        z-index: 1;
+    
+        &:hover {
+          background-color: #0056b3;
+        }
+    
+        &:active {
+          background-color: #0056b3;
+        }
+    
+        &[disabled] {
+          background-color: rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          cursor: not-allowed;
+        }
+    }
+    
+    @media (max-width: 590px) {
+        .custom_file_download {
+            // grid-column: 5;
+            display: flex;
+            // align-items: center;
+            // justify-content: center;
+            text-align: center;
+            line-height: 1.2;
+    
+            margin: auto;
+            padding: 10px;
+            border-radius: 4px;
+    
+            max-width: 90px;
+            block-size: 35.34px;
+            color: #fff;
+            background-color: #007bff;
+            font-weight: normal;
+            font-size: 13.3333px;
+            cursor: pointer;
+            z-index: 1;
+    
+            &:hover {
+              background-color: #0056b3;
+            }
+    
+            &:active {
+              background-color: #0056b3;
+            }
+    
+            &[disabled] {
+              background-color: rgba(0, 0, 0, 0.1);
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              cursor: not-allowed;
+            }
+          }
+      } 
