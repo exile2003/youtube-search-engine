@@ -38,13 +38,13 @@ function App() {
     setDB(value);
   }, []);
 
-  const udateOpened = useCallback((value) => {
+  const updateOpened = useCallback((value) => {
     setOpened(value);
   }, []);
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', udateOpened, updateDB));
+  const [dataBase, setDB] = useState(() => loadDB('videos', 'youtubeDB', 'keyYoutubeDB', updateOpened, updateDB));
   const [opened, setOpened] = useState(false);
 
   console.log(
@@ -90,7 +90,7 @@ function App() {
         <MemoForm
           updateItems={updateItems}
           updateIsLoading={updateIsLoading}
-          udateOpened={udateOpened}
+          updateOpened={updateOpened}
           updateDB={updateDB}
           dataBase={dataBase}
           opened={opened}
@@ -98,7 +98,7 @@ function App() {
         <MemoListItems items={items} />
         <Modal
           opened={opened}
-          onClose={() => udateOpened(false)}
+          onClose={() => updateOpened(false)}
           title={<div><h2>{t('No database available')}</h2></div>}
           withinPortal={false}
         >

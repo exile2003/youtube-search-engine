@@ -1,21 +1,13 @@
-function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
-  let db;
+function loadDB(objectStore, databaseName, key, updateOpened, updateDB) {
+  //let db;
   const openRequest = indexedDB.open(databaseName, 1);
-
-  openRequest.onupgradeneeded = function () {
-    console.log('openRequest.onupgradeneeded');
-    const thisDB = openRequest.result;
-    if (!thisDB.objectStoreNames.contains(objectStore)) {
-      thisDB.createObjectStore(objectStore);
-    }
-  };
 
   openRequest.onsuccess = function () {
     console.log('openRequest.onsuccess');
-    db = openRequest.result;
+    const db = openRequest.result;
     if (db.objectStoreNames.contains(objectStore)) {
-      const transaction = db.transaction([objectStore], 'readonly');
-      const store = transaction.objectStore(objectStore);
+      const tx = db.transaction([objectStore], 'readonly');
+      const store = tx.objectStore(objectStore);
       const request = store.get(key);
       request.onsuccess = function () {
         // console.log("request.onsuccess")
@@ -23,7 +15,7 @@ function loadDB(objectStore, databaseName, key, udateOpened, updateDB) {
         if (request.result) {
           updateDB(request.result);
         } else {
-          udateOpened(true);
+          updateOpened(true);
         }
       };
     } else {
