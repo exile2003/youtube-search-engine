@@ -83,12 +83,12 @@ function Form({
       console.log("true | false",  typeof allSelectors[2].childNodes[3]?.childNodes[0]?.textContent)
 
       // Form the youtubeDB array with youtube videos data
-      allSelectors.forEach((item) => item.children[0] && youtubeDB.push({
-        title: item.children[0]?.textContent,
-        titleLink: item.children[0]?.href,
-        channel: item.children[2]?.textContent,
-        channelLink: item.children[2]?.href,
-        date: item.lastChild?.textContent,
+      allSelectors.forEach(item => item.childNodes[3]?.childNodes[0]?.nodeType === Node.TEXT_NODE && youtubeDB.push({
+        title: item.childNodes[1]?.textContent,
+        titleLink: item.childNodes[1]?.href,
+        channel: item.childNodes[3]?.textContent,
+        channelLink: item.childNodes[3]?.href,
+        date: item.childNodes[5]?.textContent,
       }));
 
       // console.log("Form. getFile. reader.onload youtubeDB last", youtubeDB.length);
