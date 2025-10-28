@@ -78,6 +78,10 @@ function Form({
       // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
       const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
 
+      console.log("true | false",  typeof allSelectors[0].childNodes[3].innerText )
+      console.log("true | false",  typeof allSelectors[0].childNodes[3]?.childNodes[0]?.textContent )
+      console.log("true | false",  typeof allSelectors[2].childNodes[3]?.childNodes[0]?.textContent)
+
       // Form the youtubeDB array with youtube videos data
       allSelectors.forEach((item) => item.children[0] && youtubeDB.push({
         title: item.children[0]?.textContent,
