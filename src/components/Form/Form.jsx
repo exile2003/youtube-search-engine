@@ -77,27 +77,14 @@ function Form({
 
       // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
       const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
-
-      console.log("allSelectors[0]", allSelectors[0])
-      console.log("allSelectors[0]", allSelectors[0].childNodes[1])
-      console.log("allSelectors[0]", allSelectors[0].childNodes[2])
-      console.log("allSelectors[0]", allSelectors[0].childNodes[3])
-      console.log("allSelectors[0]", allSelectors[0].childNodes[4])
-      console.log("allSelectors[0]", allSelectors[0].childNodes[5])
-
-      console.log("allSelectors[0]", allSelectors[2])
-      console.log("allSelectors[0]", allSelectors[2].childNodes[1])
-      console.log("allSelectors[0]", allSelectors[2].childNodes[2])
-      console.log("allSelectors[0]", allSelectors[2].childNodes[3])
-      console.log("allSelectors[0]", allSelectors[2].childNodes[4])
-      console.log("allSelectors[0]", allSelectors[2].childNodes[5])
-
-      console.log("true | false",  typeof allSelectors[0].childNodes[3].innerText )
-      console.log("true | false",  typeof allSelectors[0].childNodes[3]?.childNodes[0]?.textContent )
-      console.log("true | false",  typeof allSelectors[2].childNodes[3]?.childNodes[0]?.textContent)
-
+/*
+      console.log("true | false",  allSelectors[0].childNodes[3].childNodes[0]?.innerText )
+      console.log("true | false",  allSelectors[0].childNodes[3]?.childNodes[0]?.nodeType )
+      console.log("true | false",  allSelectors[2].childNodes[3]?.childNodes[0]?.nodeType )
+      console.log(Node.TEXT_NODE)
+*/
       // Form the youtubeDB array with youtube videos data
-      allSelectors.forEach(item => typeof item.childNodes[3]?.childNodes[0]?.textContent === "string" && youtubeDB.push({
+      allSelectors.forEach(item => item.childNodes[3]?.childNodes[0]?.nodeType === Node.TEXT_NODE && youtubeDB.push({
         title: item.childNodes[1]?.textContent,
         titleLink: item.childNodes[1]?.href,
         channel: item.childNodes[3]?.textContent,
