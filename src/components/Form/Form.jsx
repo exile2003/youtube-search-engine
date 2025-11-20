@@ -1,6 +1,5 @@
 import 'moment/dist/locale/ru';
 import '../../services/i18n';
-
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -77,10 +76,6 @@ function Form({
 
       // Pass the content of 'content-cell' and 'mdl-cell--6-col' classes to array allSelectors
       const allSelectors = domTree.querySelectorAll('.content-cell.mdl-cell--6-col');
-
-      console.log("true | false",  typeof allSelectors[0].childNodes[3].innerText )
-      console.log("true | false",  typeof allSelectors[0].childNodes[3]?.childNodes[0]?.textContent )
-      console.log("true | false",  typeof allSelectors[2].childNodes[3]?.childNodes[0]?.textContent)
 
       // Form the youtubeDB array with youtube videos data
       allSelectors.forEach(item => item.childNodes[3]?.childNodes[0]?.nodeType === Node.TEXT_NODE && youtubeDB.push({
