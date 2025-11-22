@@ -7,10 +7,10 @@ export default defineConfig({
   base: '',
   plugins: [
     react(),
-  //  viteSassDts({
-  //    enabledMode: ['development', 'production'],
-  //  }),
-  ],
+   viteSassDts({
+     enabledMode: ['development', 'production'],
+   }),
+   ],
   test: {
     environment: 'jsdom',
   }

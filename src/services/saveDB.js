@@ -1,5 +1,5 @@
 function saveDB(database, objectStore, databaseName, key) {
-  let db;
+  //let db;
   const openRequest = indexedDB.open(databaseName, 1);
 
   openRequest.onupgradeneeded = function () {
@@ -9,11 +9,13 @@ function saveDB(database, objectStore, databaseName, key) {
     }
   };
 
-  openRequest.onsuccess = function () {
-    db = openRequest.result;
+  openRequest.onsuccess = function (e) {
+    //const db = openRequest.result;
+    const db = e.target.result;
     const tx = db.transaction([objectStore], 'readwrite');
     const store = tx.objectStore(objectStore);
     const request = store.put(database, key);
+    console.log('База данных добавлена в хранилище-2', request.result);
     request.onsuccess = function () {
       console.log('База данных добавлена в хранилище', request.result);
     };

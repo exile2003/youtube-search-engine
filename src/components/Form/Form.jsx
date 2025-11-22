@@ -13,7 +13,7 @@ let tempDB = [];
 function Form({
   updateItems,
   updateIsLoading,
-  udateOpened,
+  updateOpened,
   updateDB,
   dataBase,
   opened,
@@ -131,7 +131,7 @@ function Form({
     }, 0);
 
     if (dataBase == undefined) {
-      setTimeout(() => udateOpened(true), 0);
+      setTimeout(() => updateOpened(true), 0);
     } else {
       setTimeout(() => titleInputRef.current.focus(), 0);
     }

@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
-    "test": "vitest"
+    "test-vitest": "vitest",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@mantine/core": "^7.12.2",
