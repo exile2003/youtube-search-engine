@@ -1,6 +1,13 @@
 function loadDB(objectStore, databaseName, key, updateOpened, updateDB) {
-  //let db;
+  
   const openRequest = indexedDB.open(databaseName, 1);
+
+  openRequest.onupgradeneeded = function (e) {
+    const thisDB = e.target.result;
+    if (!thisDB.objectStoreNames.contains(objectStore)) {
+      thisDB.createObjectStore(objectStore);
+    }
+  };
 
   openRequest.onsuccess = function (e) {
     console.log('openRequest.onsuccess');
@@ -10,8 +17,6 @@ function loadDB(objectStore, databaseName, key, updateOpened, updateDB) {
       const store = tx.objectStore(objectStore);
       const request = store.get(key);
       request.onsuccess = function (e) {
-        // console.log("request.onsuccess")
-        console.log('LoadDB. request.onsuccess', e.target.result);
         if (e.target.result) {
           updateDB(e.target.result);
         } else {

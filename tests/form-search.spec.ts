@@ -21,7 +21,9 @@ const filePath = path.join( __dirname, '../public/', 'watch-history.html');
   await page.setInputFiles('input[type="file"]', filePath);
 
   // 2. Вводим текст в поле input
-  await page.locator('[class*="custom_file_download"]').click();
+  //await page.locator('.mantine-Modal-overlay').waitFor({ state: 'hidden' });
+  await page.locator('button[class*="mantine-Modal-close"]').click();
+  //await page.locator('[class*="custom_file_download"]').click();
   //await page.fill(`#${styles.name}`, 'hello'); 
   // или: await page.getByPlaceholder('enter keyword...').fill('hello');
   // или: await page.locator('input[name="search"]').fill('hello');
