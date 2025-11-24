@@ -53,7 +53,7 @@ describe("SearchForm", () => {
 
   expect(input.files[0].name).toBe('watch-history.html');
 
-    //const el = document.querySelector(`.${styles.custom_file_download}`);
+    const el = document.querySelector(`.${styles.custom_file_download}`);
     //expect(el).not.toBeNull();
 
     //await userEvent.click(el)
