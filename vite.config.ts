@@ -11,7 +11,7 @@ export default defineConfig({
   //    enabledMode: ['development', 'production'],
   //  }),
   ],
-  test: {
-    environment: 'jsdom',
-  }
+  // test: {
+  //   environment: 'jsdom',
+  // }
 })

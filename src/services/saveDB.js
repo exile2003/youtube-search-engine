@@ -1,5 +1,6 @@
 function saveDB(database, objectStore, databaseName, key) {
   let db;
+  console.log("saveDB - start")
   const openRequest = indexedDB.open(databaseName, 1);
 
   openRequest.onupgradeneeded = function () {

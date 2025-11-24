@@ -12,7 +12,7 @@ const dbName = "TestDB";
 
 beforeEach(async () => {
   // Удаляем базу перед каждым тестом
-  indexedDB.deleteDatabase(dbName);
+  //indexedDB.deleteDatabase(dbName);
 });
 
 describe("SearchForm", () => {
