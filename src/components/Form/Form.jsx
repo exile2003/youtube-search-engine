@@ -191,9 +191,9 @@ function Form({
   };
 
   useEffect(() => {
-    console.log('Form. useEffect-2', dataBase, opened);
+    //console.log('Form. useEffect-2', dataBase, opened);
     if (dataBase == undefined) {
-      console.log('Form. useEffect-2. DownloadButton.', fileDownloadButtonRef);
+      //console.log('Form. useEffect-2. DownloadButton.', fileDownloadButtonRef);
       fileDownloadButtonRef.current.focus();
     } else {
       console.log('Form. useEffect-2. TitleInput.');

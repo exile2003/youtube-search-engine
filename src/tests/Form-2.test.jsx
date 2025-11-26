@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, beforeEach, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -5,14 +6,14 @@ import "fake-indexeddb/auto";
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import SearchForm from "../components/Form/Form.jsx";
-//import App from "../App.jsx"
-import styles from '../components/Form/Form.module.scss'
+import App from "../App.jsx"
+//import styles from '../components/Form/Form.module.scss.js'
 
 const dbName = "TestDB";
 
 beforeEach(async () => {
   // Удаляем базу перед каждым тестом
-  //indexedDB.deleteDatabase(dbName);
+  indexedDB.deleteDatabase(dbName);
 });
 
 describe("SearchForm", () => {
@@ -53,7 +54,7 @@ describe("SearchForm", () => {
 
   expect(input.files[0].name).toBe('watch-history.html');
 
-    const el = document.querySelector(`.${styles.custom_file_download}`);
+    //const el = document.querySelector(`.${styles.custom_file_download}`);
     //expect(el).not.toBeNull();
 
     //await userEvent.click(el)
