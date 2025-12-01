@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-test('file upload + type in input', async ({ page }) => {
+test('file upload + search result', async ({ page }) => {
   // Открываем страницу
   await page.goto('http://localhost:5173');
 
