@@ -1,0 +1,43 @@
+
+.language {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  text-transform: uppercase;
+  color: #1b3ac4;
+  cursor: pointer;
+}
+
+.lang_links {
+  grid-column: 5;
+  text-align: center;
+}
+
+.lang_link {
+  margin-right: 10px;
+  padding: 3px;
+
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none; /* Убираем стандартное подчеркивание */
+  color: #555; /* Цвет для неактивной ссылки */
+}
+
+.lang_link:hover {
+  color: #0f36e0; /* Цвет при наведении */
+  text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.lang_link_active {
+  padding: 3px;
+  color: #fff; /* Цвет для активного языка */
+  background-color: #1331db;
+  border-radius: 50%;
+  text-decoration: none;
+  cursor: default;
+
+  &:hover {
+      color: #fff;
+      text-decoration: none;    
+  }
+}
