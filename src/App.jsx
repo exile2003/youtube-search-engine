@@ -1,13 +1,11 @@
 import { Modal } from '@mantine/core';
-import {
-  memo, useCallback, useEffect, useMemo,
-  useState,
-} from 'react';
+import { memo, useCallback, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { RingLoader } from 'react-spinners';
 
 import styles from './App.module.scss';
+import LanguageSelector from './components/LanguageSelector/LanguageSelector';
 import Form from './components/Form/Form';
 import ListItems from './components/Listitems/ListItems';
 import loadDB from './services/loadDB';
@@ -19,21 +17,14 @@ function App() {
   console.log('App.');
   const { i18n, t } = useTranslation();
 
-  const changeLanguage = useCallback((lng) => i18n.changeLanguage(lng), []);
-
+ // const changeLanguage = useCallback((lng) => i18n.changeLanguage(lng), []);
+/*
   const indicateChoosedLanguage = (lng) => {
     const lang_links = document.querySelectorAll(`.${styles.lang_link}`);
     lang_links.forEach((item) => item.classList.remove(styles.lang_link_active));
     lang_links.forEach((item) => item.textContent.trim() === lng && item.classList.add(styles.lang_link_active));
   };
-
-  const handleChangeLanguage = (e) => {
-    e.preventDefault();
-    changeLanguage(e.target.innerHTML);
-    indicateChoosedLanguage(e.target.innerHTML);
-    localStorage.setItem('selectedLanguage', e.target.innerHTML);
-  };
-
+*/
   const updateDB = useCallback((value) => {
     setDB(value);
   }, []);
@@ -66,27 +57,22 @@ function App() {
     flushSync(() => setIsLoading(value));
   }, []);
 
-  useEffect(() => {
-    const selectedLanguage = localStorage.getItem('selectedLanguage');
-    if (!selectedLanguage) {
-      changeLanguage('en');
-      indicateChoosedLanguage('en');
-    } else {
-      changeLanguage(selectedLanguage);
-      indicateChoosedLanguage(selectedLanguage);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const selectedLanguage = localStorage.getItem('selectedLanguage');
+  //   if (!selectedLanguage) {
+  //     changeLanguage('en');
+  //     indicateChoosedLanguage('en');
+  //   } else {
+  //     changeLanguage(selectedLanguage);
+  //     indicateChoosedLanguage(selectedLanguage);
+  //   }
+  // }, []);
 
   return (
     <>
       {isLoading && <div className={styles.spinner}><RingLoader /></div>}
       <div style={isLoading ? { display: 'none' } : {}}>
-        <div className={styles.language}>
-          <div className={styles.lang_links}>
-            <a className={styles.lang_link} onClick={(e) => handleChangeLanguage(e)}>en</a>
-            <a className={styles.lang_link} onClick={(e) => handleChangeLanguage(e)}>ru</a>
-          </div>
-        </div>
+        <LanguageSelector />
         <MemoForm
           updateItems={updateItems}
           updateIsLoading={updateIsLoading}
