@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from 'react'
+import { useCallback, useEffect } from 'react'
 import styles from './LanguageSelector.module.scss'
 import { useTranslation } from 'react-i18next';
 
