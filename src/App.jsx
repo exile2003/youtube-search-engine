@@ -17,14 +17,6 @@ function App() {
   console.log('App.');
   const { i18n, t } = useTranslation();
 
- // const changeLanguage = useCallback((lng) => i18n.changeLanguage(lng), []);
-/*
-  const indicateChoosedLanguage = (lng) => {
-    const lang_links = document.querySelectorAll(`.${styles.lang_link}`);
-    lang_links.forEach((item) => item.classList.remove(styles.lang_link_active));
-    lang_links.forEach((item) => item.textContent.trim() === lng && item.classList.add(styles.lang_link_active));
-  };
-*/
   const updateDB = useCallback((value) => {
     setDB(value);
   }, []);
@@ -56,17 +48,6 @@ function App() {
   const updateIsLoading = useCallback((value) => {
     flushSync(() => setIsLoading(value));
   }, []);
-
-  // useEffect(() => {
-  //   const selectedLanguage = localStorage.getItem('selectedLanguage');
-  //   if (!selectedLanguage) {
-  //     changeLanguage('en');
-  //     indicateChoosedLanguage('en');
-  //   } else {
-  //     changeLanguage(selectedLanguage);
-  //     indicateChoosedLanguage(selectedLanguage);
-  //   }
-  // }, []);
 
   return (
     <>

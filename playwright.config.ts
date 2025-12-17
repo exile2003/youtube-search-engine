@@ -17,10 +17,11 @@ const __dirname = path.dirname(__filename);
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  /* Run server */
   webServer: {
     command: 'npm run dev',
     port: 5173,
-    reuseExistingServer: true, // если сервер уже запущен, не запускать новый
+    reuseExistingServer: true, // if the server is already running, don't start a new one / если сервер уже запущен, не запускать новый
   },
   testDir: path.join(__dirname, 'tests'),
   /* Run tests in files in parallel */

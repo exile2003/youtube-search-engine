@@ -10,7 +10,7 @@ function saveDB(database, objectStore, databaseName, key) {
   };
 
   openRequest.onsuccess = function (e) {
-    //const db = openRequest.result;
+    // Also possible the variant const db = openRequest.result;
     const db = e.target.result;
     const tx = db.transaction([objectStore], 'readwrite');
     const store = tx.objectStore(objectStore);
