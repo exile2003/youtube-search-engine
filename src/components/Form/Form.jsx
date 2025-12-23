@@ -12,7 +12,7 @@ let tempDB = [];
 
 function Form({
   updateItems,
-  updateIsLoading,
+  showSpinner,
   updateOpened,
   updateDB,
   dataBase,
@@ -52,17 +52,17 @@ function Form({
 
     updateItems([]);
     setItemsNumber(0);
-    setFileID(() => Symbol());
-
+    
     try {
-      if (file) getFile(file);
+       if(file) getFile(file);
     } catch (error) {
       console.error('Ошибка загрузки файла:', error);
-    }
+    } 
   };
 
   const getFile = (file) => {
-    updateIsLoading(true);
+
+    showSpinner(true);
 
     const reader = new FileReader();
     reader.readAsText(file);
@@ -90,17 +90,21 @@ function Form({
       console.log('fileDownload', youtubeDB.length);
       saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
       updateDB(youtubeDB);
-      updateIsLoading(false);
+      
+      new Promise(r => setTimeout(r, 200)).then(
+        () => showSpinner(false)         
+      ); 
+        
     };
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateIsLoading(true);
+    showSpinner(true);
 
     setTimeout(() => {
       if (
-        fileID != fileIDPrevious.current
+                fileID != fileIDPrevious.current
               | title != titlePrevious.current
               | channel != channelPrevious.current
               | dateFrom != dateFromPrevious.current
@@ -127,7 +131,11 @@ function Form({
         uniquePrevious.current = unique;
         fileIDPrevious.current = fileID;
       }
-      updateIsLoading(false);
+      
+      new Promise(r => setTimeout(r, 200)).then(
+        () => showSpinner(false)
+      );
+       
     }, 0);
 
     if (dataBase == undefined) {
@@ -139,7 +147,7 @@ function Form({
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      // Выполняем действие клика, если нажата клавиша Enter
+      // Выполняем действие клика на кнопке загрузки файла, если нажата клавиша Enter
       fileDownloadButtonRef.current.click();
     }
   };
@@ -191,9 +199,8 @@ function Form({
   };
 
   useEffect(() => {
-    //console.log('Form. useEffect-2', dataBase, opened);
+
     if (dataBase == undefined) {
-      //console.log('Form. useEffect-2. DownloadButton.', fileDownloadButtonRef);
       fileDownloadButtonRef.current.focus();
     } else {
       console.log('Form. useEffect-2. TitleInput.');
