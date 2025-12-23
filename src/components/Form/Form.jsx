@@ -90,7 +90,9 @@ function Form({
       console.log('fileDownload', youtubeDB.length);
       saveDB(youtubeDB, 'videos', 'youtubeDB', 'keyYoutubeDB');
       updateDB(youtubeDB);
-      updateIsLoading(false);
+      new Promise(r => setTimeout(r, 200)).then(
+        () => updateIsLoading(false)
+      );      
     };
   };
 
@@ -100,7 +102,7 @@ function Form({
 
     setTimeout(() => {
       if (
-        fileID != fileIDPrevious.current
+                fileID != fileIDPrevious.current
               | title != titlePrevious.current
               | channel != channelPrevious.current
               | dateFrom != dateFromPrevious.current
@@ -127,7 +129,9 @@ function Form({
         uniquePrevious.current = unique;
         fileIDPrevious.current = fileID;
       }
-      updateIsLoading(false);
+      new Promise(r => setTimeout(r, 200)).then(
+        () => updateIsLoading(false)
+      );  
     }, 0);
 
     if (dataBase == undefined) {
@@ -191,9 +195,7 @@ function Form({
   };
 
   useEffect(() => {
-    //console.log('Form. useEffect-2', dataBase, opened);
     if (dataBase == undefined) {
-      //console.log('Form. useEffect-2. DownloadButton.', fileDownloadButtonRef);
       fileDownloadButtonRef.current.focus();
     } else {
       console.log('Form. useEffect-2. TitleInput.');

@@ -43,15 +43,17 @@ function App() {
 
   const updateItems = useCallback((value) => {
     flushSync(() => setItems(value));
+    //() => setItems(value)
   }, []);
 
   const updateIsLoading = useCallback((value) => {
     flushSync(() => setIsLoading(value));
+    //() => setIsLoading(value)
   }, []);
 
   return (
     <>
-      {isLoading && <div className={styles.spinner}><RingLoader /></div>}
+      {isLoading && <div className={styles.spinner} data-testid="spinner"><RingLoader /></div>}
       <div style={isLoading ? { display: 'none' } : {}}>
         <LanguageSelector />
         <MemoForm
