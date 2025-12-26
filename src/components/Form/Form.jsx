@@ -105,6 +105,7 @@ function Form({
     setTimeout(() => {
       if (
                 fileID != fileIDPrevious.current
+                fileID != fileIDPrevious.current
               | title != titlePrevious.current
               | channel != channelPrevious.current
               | dateFrom != dateFromPrevious.current
