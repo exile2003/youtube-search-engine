@@ -11,7 +11,7 @@ test('choose language', async ({ page }) => {
 
   // клик на элемент выбора английского языка 'en' и проверка содержимого поля 'Video title:'
   await page.locator('[class*="lang_link"]', {hasText: 'en'}).nth(1).click();
-  await expect(await page.locator('label[class*="_name_"]')).toContainText('/Video title:');
+  await expect(await page.locator('label[class*="_name_"]')).toContainText('Video title:');
 
   // клик на элемент выбора английского языка 'ru' и проверка содержимого поля 'Название видео:'
   await page.locator('[class*="lang_link"]', {hasText: 'ru'}).nth(1).click();
